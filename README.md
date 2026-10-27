@@ -10,5 +10,5 @@ Hacemos de libros. Originalmente elegimos hacer de videojuegos pero no hay ningu
 ### Cuentas: 
  - Jona: naijoninab@gmail.com
  - Hong: santinicohong@gmail.com
- - Choe: cuenta de ort
+ - Choe: santichoe23@gmail.com
  - Hong: cuenta de ort
