@@ -10,8 +10,8 @@ const svc = new AuthService();
 
 const SECRET_KEY = process.env.JWT_SECRET; 
 
-router.post('/registro', validateRegister, async (req, res) => {
-  const { username , email, password_hash, avatar_url, bio, created_at } = req.body;
+router.post('/register', validateRegister, async (req, res) => {
+  const { username , email, password, avatar_url, bio, created_at } = req.body;
   
   try {
     const userExists = await svc.valUserExist(username, email);
@@ -19,7 +19,7 @@ router.post('/registro', validateRegister, async (req, res) => {
       return res.status(400).json({ error: 'El nombre de usuario o el correo electrónico ya están en uso' });
     }
     
-    const hashedPassword = await bcrypt.hash(password_hash, 10);
+    const hashedPassword = await bcrypt.hash(password, 10);
     const nuevoUsuario = await svc.createAsync({
       ...req.body,
       password_hash: hashedPassword
@@ -43,7 +43,7 @@ router.post('/registro', validateRegister, async (req, res) => {
 });
 
 router.post('/login', validateUser, async (req, res) => {
-  const { username, password_hash } = req.body;
+  const { username, password } = req.body;
 
   try { 
     const user = await svc.getUserAsync(username);
@@ -52,7 +52,7 @@ router.post('/login', validateUser, async (req, res) => {
       return res.status(404).json({ error: 'User not found' });
     }
 
-    const passwordCorrecta = await bcrypt.compare(password_hash, user.password_hash);
+    const passwordCorrecta = await bcrypt.compare(password, user.password_hash);
 
     if (username === user.username && passwordCorrecta) {
       
@@ -66,7 +66,9 @@ router.post('/login', validateUser, async (req, res) => {
       return res.status(200).json({ 
         message: 'Login successful', 
         token: token,   
-        user 
+        id: user.id,
+        username: user.username,
+        email: user.email, 
       });
     } else {
       res.status(401).json({ message: 'Credenciales inválidas' });
