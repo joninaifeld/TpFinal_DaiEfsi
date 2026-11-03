@@ -9,8 +9,8 @@ export default class UserService {
         try {
             await client.connect();
             const sql = `
-                UPDATE "usuarios" SET bio = COALESCE($1, biografia), 
-                    avatar_url = COALESCE($2, foto_perfil),
+                UPDATE "usuarios" SET bio = COALESCE($1, bio), 
+                    avatar_url = COALESCE($2, avatar_url),
                     reading_goal_annual = COALESCE($3, reading_goal_annual)
                 WHERE id = $4
                 RETURNING id, username, email, avatar_url, bio, reading_goal_annual;
