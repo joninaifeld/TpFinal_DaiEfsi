@@ -1,6 +1,6 @@
 import { Router } from "express";
 import OpenLibraryService from "../services/openLibraryService.js";
-import BookService from "../services/bookService.js"; // El servicio que acabamos de armar
+import BookService from "../services/bookService.js";
 import verifyToken from "../middlewares/authMiddleware.js";
 import { validaString } from "../helpers/valHelpers.js";
 
