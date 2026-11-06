@@ -16,7 +16,10 @@ router.put('/perfil', verifyToken, async (req, res) => {
         user: updatedUser 
     });
   } catch (error) {
-    return res.status(500).json({ error: 'Error al actualizar el perfil' });
+    return (
+        res.status(500).json({ error: 'Error al actualizar el perfil' }),
+        console.error("Error al actualizar perfil:", error)
+    );
   }
 });
 

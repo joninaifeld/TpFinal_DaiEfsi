@@ -12,7 +12,7 @@ app.use(express.json());
 
 // Routes
 app.use("/api", authRoute);
-app.use("/api", bookRoute),
+app.use("/api", bookRoute);
 app.use("/api", userRoute);
 
 app.use('', (req, res) => {
