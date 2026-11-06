@@ -6,8 +6,7 @@ const { Client } = pkg;
 const olService = new OpenLibraryService();
 
 export default class BookService {
-    
-    async getOrCreateLibroLocal(client, olid) {
+    getOrCreateLibroLocal = async (client, olid) => {
         const findSql = `SELECT id FROM libros WHERE openlibrary_key = $1`;
         const findRes = await client.query(findSql, [olid]);
         
@@ -31,7 +30,7 @@ export default class BookService {
         return insertRes.rows[0].id;
     }
 
-    async upsertEstado(userId, olid, nuevoEstado) {
+    upsertEstado = async (userId, olid, nuevoEstado) => {
         const client = new Client(config);
         try {
             await client.connect();
@@ -57,7 +56,7 @@ export default class BookService {
         }
     }
 
-    async upsertFavorito(userId, olid, esFavorito) {
+    upsertFavorito = async (userId, olid, esFavorito) => {
         const client = new Client(config);
         try {
             await client.connect();

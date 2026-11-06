@@ -24,38 +24,6 @@ SET default_tablespace = '';
 
 SET default_table_access_method = heap;
 
---
--- Name: actividades; Type: TABLE; Schema: public; Owner: postgres
---
-
-CREATE TABLE public.actividades (
-    id integer NOT NULL,
-    usuario_id integer NOT NULL,
-    tipo_actividad character varying(50) NOT NULL,
-    descripcion text NOT NULL,
-    created_at timestamp without time zone DEFAULT CURRENT_TIMESTAMP
-);
-
-
-ALTER TABLE public.actividades OWNER TO postgres;
-
---
--- Name: actividades_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
---
-
-CREATE SEQUENCE public.actividades_id_seq
-    AS integer
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
-ALTER SEQUENCE public.actividades_id_seq OWNER TO postgres;
-
-ALTER SEQUENCE public.actividades_id_seq OWNED BY public.actividades.id;
-
 
 --
 -- Name: estado_lectura; Type: TABLE; Schema: public; Owner: postgres
@@ -257,43 +225,9 @@ ALTER TABLE ONLY public.valoraciones_resenas ALTER COLUMN id SET DEFAULT nextval
 
 
 --
--- Data (Inserts)
---
-
-COPY public.actividades (id, usuario_id, tipo_actividad, descripcion, created_at) FROM stdin;
-1	1	CAMBIO_ESTADO	Marcó "Dune" como Leído	2026-10-27 10:21:18.666201
-\.
-
-COPY public.estado_lectura (id, usuario_id, libro_id, estado, es_favorito, updated_at) FROM stdin;
-1	1	1	Leído	t	2026-10-27 10:21:18.666201
-\.
-
-COPY public.coleccion_libros (coleccion_id, libro_id, added_at) FROM stdin;
-1	1	2026-10-27 10:21:18.666201
-\.
-
-COPY public.colecciones (id, usuario_id, nombre, descripcion, created_at) FROM stdin;
-1	1	Favoritos Sci-Fi	Mi lista personal de imperdibles del espacio.	2026-10-27 10:21:18.666201
-\.
-
-COPY public.libros (id, openlibrary_key, titulo, autor, cover_url, genero_principal) FROM stdin;
-1	/works/OL27448W	Dune	Frank Herbert	https://covers.openlibrary.org/b/id/12818862-L.jpg	Science Fiction
-\.
-
-COPY public.usuarios (id, username, email, password_hash, avatar_url, bio, reading_goal_annual, created_at) FROM stdin;
-1	demo_user	demo@bookly.com	$2b$10$wT3I4uX3q4z5v6w7x8y9uO0a1b2c3d4e5f6g7h8i9j0k1l2m3n4o	\N	Lector apasionado de ciencia ficción y fantasía.	12	2026-10-27 10:21:18.666201
-\.
-
-COPY public.valoraciones_resenas (id, usuario_id, libro_id, puntuacion, resena_texto, created_at) FROM stdin;
-1	1	1	5	Una obra maestra de la ciencia ficción.	2026-10-27 10:21:18.666201
-\.
-
-
---
 -- Sequences Setting
 --
 
-SELECT pg_catalog.setval('public.actividades_id_seq', 1, true);
 SELECT pg_catalog.setval('public.estado_lectura_id_seq', 1, true);
 SELECT pg_catalog.setval('public.colecciones_id_seq', 1, true);
 SELECT pg_catalog.setval('public.libros_id_seq', 1, true);
@@ -304,9 +238,6 @@ SELECT pg_catalog.setval('public.valoraciones_resenas_id_seq', 1, true);
 --
 -- Constraints & Indexes
 --
-
-ALTER TABLE ONLY public.actividades
-    ADD CONSTRAINT actividades_pkey PRIMARY KEY (id);
 
 ALTER TABLE ONLY public.estado_lectura
     ADD CONSTRAINT estado_lectura_pkey PRIMARY KEY (id);
@@ -353,9 +284,6 @@ CREATE INDEX idx_colecciones_usuario ON public.colecciones USING btree (usuario_
 --
 -- Foreign Keys
 --
-
-ALTER TABLE ONLY public.actividades
-    ADD CONSTRAINT actividades_usuario_id_fkey FOREIGN KEY (usuario_id) REFERENCES public.usuarios(id) ON DELETE CASCADE;
 
 ALTER TABLE ONLY public.estado_lectura
     ADD CONSTRAINT estado_lectura_libro_id_fkey FOREIGN KEY (libro_id) REFERENCES public.libros(id) ON DELETE CASCADE;
