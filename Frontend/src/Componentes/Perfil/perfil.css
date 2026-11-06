@@ -1,0 +1,239 @@
+/* Fuente del diseño: Cormorant Garamond.
+   Agregá en index.html:
+   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&display=swap" rel="stylesheet"> */
+
+.perfil {
+  --fondo: #f8f6f1;
+  --blanco: #ffffff;
+  --borde-avatar: #e8e4da;
+  --texto: #1a1d21;
+  --estrella: #d9d9d9;
+  --portada: #ff3b3b;
+  --sombra: 0 2px 5px rgba(0, 0, 0, 0.22);
+
+  display: flex;
+  align-items: flex-start;
+  gap: 42px;
+  box-sizing: border-box;
+  width: 100%;
+  min-height: 462px;
+  padding: 24px 24px 24px 27px;
+  background: var(--fondo);
+  color: var(--texto);
+  font-family: 'Cormorant Garamond', Georgia, serif;
+}
+
+.perfil *,
+.perfil *::before,
+.perfil *::after {
+  box-sizing: border-box;
+}
+
+.perfil p,
+.perfil h2 {
+  margin: 0;
+}
+
+/* ---------- Columna izquierda ---------- */
+.perfil__lateral {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  flex: 0 0 162px;
+  width: 162px;
+}
+
+.avatar {
+  width: 162px;
+  height: 162px;
+  margin-bottom: -4px;
+  border-radius: 50%;
+  background: var(--blanco);
+  border: 3px solid var(--borde-avatar);
+  object-fit: cover;
+  object-position: 55% 22%;
+  display: block;
+}
+
+.campo {
+  width: 138px;
+  padding: 3px 5px;
+  border-radius: 5px;
+  background: var(--blanco);
+  box-shadow: var(--sombra);
+  font-size: 13px;
+  line-height: 1.2;
+}
+
+.campo--nombre {
+  font-size: 14px;
+}
+
+.campo--bio {
+  position: relative;
+  display: flex;
+  justify-content: space-between;
+  min-height: 22px;
+  padding-right: 3px;
+  font-size: 8px;
+}
+
+.campo--genero {
+  font-size: 8px;
+  min-height: 21px;
+}
+
+.campo__editar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  margin-top: -1px;
+  border: 0;
+  background: transparent;
+  color: var(--texto);
+  cursor: pointer;
+}
+
+/* ---------- Columna derecha ---------- */
+.perfil__contenido {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  flex: 1;
+  max-width: 528px;
+  min-width: 0;
+}
+
+.seccion {
+  padding: 4px 8px 10px;
+  border-radius: 5px;
+  background: var(--blanco);
+  box-shadow: var(--sombra);
+}
+
+.seccion__titulo {
+  margin-bottom: 4px;
+  font-size: 13px;
+  font-weight: 500;
+  line-height: 1.2;
+}
+
+.seccion__fila {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 3px;
+}
+
+.seccion--resenias {
+  min-height: 85px;
+}
+
+/* ---------- Tarjeta de libro ---------- */
+.tarjeta-libro {
+  display: flex;
+  flex-direction: column;
+  width: 78px;
+  min-height: 110px;
+  padding: 13px 0 4px;
+  border-radius: 5px;
+  background: var(--blanco);
+  box-shadow: var(--sombra);
+}
+
+.portada {
+  display: flex;
+  align-items: flex-end;
+  align-self: center;
+  width: 41px;
+  height: 57px;
+  padding: 0 3px 3px;
+  margin-bottom: 4px;
+  border-radius: 5px;
+  background: var(--portada);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+  font-size: 10px;
+}
+
+.tarjeta-libro__nombre {
+  padding: 0 3px;
+  font-size: 9px;
+  line-height: 1.2;
+}
+
+.estrellas {
+  display: flex;
+  gap: 1px;
+  padding: 0 3px;
+  font-size: 8px;
+  line-height: 1;
+}
+
+.estrella {
+  color: var(--estrella);
+}
+
+.estrella.activa {
+  color: #c9a24b;
+}
+
+/* ---------- Estados de actividad ---------- */
+.estado {
+  display: block;
+  width: calc(100% - 8px);
+  margin: 4px 4px 0;
+  padding: 1px 3px;
+  border-radius: 6px;
+  font-family: 'Inter', system-ui, sans-serif;
+  font-size: 7px;
+  line-height: 1.2;
+  color: #ffffff;
+}
+
+.estado--leyendo,
+.estado--abandonado {
+  background: var(--texto);
+}
+
+.estado--terminado {
+  background: #2f4a3a;
+  color: #d9f2df;
+}
+
+/* ---------- Reseñas ---------- */
+.resenia {
+  width: 78px;
+  min-height: 37px;
+  padding: 3px 4px;
+  border-radius: 5px;
+  background: var(--blanco);
+  box-shadow: var(--sombra);
+}
+
+.resenia__libro {
+  font-size: 8px;
+  line-height: 1.2;
+}
+
+.resenia .estrellas {
+  padding: 0;
+  font-size: 7px;
+}
+
+.resenia__texto {
+  font-size: 7px;
+  line-height: 1.2;
+}
+
+/* ---------- Responsive ---------- */
+@media (max-width: 720px) {
+  .perfil {
+    flex-direction: column;
+    align-items: center;
+    gap: 24px;
+  }
+
+  .perfil__contenido {
+    width: 100%;
+  }
+}
