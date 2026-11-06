@@ -1,17 +1,18 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import FotoPerfil from "./Componentes/FotoPerfil/FotoPerfil";
-import fotoPrueba from "./assets/FotoPerfilprueba.png";
+import Header from "./Componentes/Header/Header";
+import fotoPrueba from "./assets/FotoPerfilPrueba.png";
 
 function App() {
   return (
     <BrowserRouter>
-      <div style={{ padding: "40px" }}>
-        <FotoPerfil foto={fotoPrueba} />
-      </div>
+      <Header fotoPerfil={fotoPrueba} />
 
       <Routes>
         <Route path="/" element={<p>Home</p>} />
-        <Route path="/perfil" element={<p>Página de perfil</p>} />
+        <Route path="/explorar" element={<p>Explorar</p>} />
+        <Route path="/biblioteca" element={<p>Biblioteca</p>} />
+        <Route path="/estadisticas" element={<p>Estadísticas</p>} />
+        <Route path="/perfil" element={<p>Perfil</p>} />
       </Routes>
     </BrowserRouter>
   );
