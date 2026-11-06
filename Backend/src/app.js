@@ -3,6 +3,7 @@ import cors from "cors";
 import authRoute from "./routes/authRoute.js";
 import bookRoute from "./routes/bookRoute.js";
 import userRoute from "./routes/userRoute.js";
+import collectionRoute from "./routes/collectionRoute.js";
 
 export const app = express();
 
@@ -14,6 +15,7 @@ app.use(express.json());
 app.use("/api", authRoute);
 app.use("/api", bookRoute);
 app.use("/api", userRoute);
+app.use("/api", collectionRoute);
 
 app.use('', (req, res) => {
   res.status(404).send('Página no encontrada')
