@@ -1,15 +1,13 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import FotoPerfil from "./Componentes/FotoPerfil/FotoPerfil";
+import Header from "./Componentes/Header/Header";
+import Footer from "./Componentes/Footer/Footer";
 import fotoPrueba from "./assets/FotoPerfilprueba.png";
-import Footer from './Componentes/Footer/Footer';
-import './App.css';
+import "./App.css";
 
 function App() {
   return (
     <BrowserRouter>
-      <div style={{ padding: "40px" }}>
-        <FotoPerfil foto={fotoPrueba} />
-      </div>
+      <Header fotoPerfil={fotoPrueba} />
 
       <main className="main-content">
         <Routes>
@@ -17,6 +15,7 @@ function App() {
           <Route path="/perfil" element={<p>Página de perfil</p>} />
         </Routes>
       </main>
+
       <Footer />
     </BrowserRouter>
   );

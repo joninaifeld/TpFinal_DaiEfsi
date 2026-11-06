@@ -1,3 +1,10 @@
 .main-content {
-  flex-grow: 1;
+  flex: 1;
+  padding: 24px 32px;
+}
+
+#root {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
 }
