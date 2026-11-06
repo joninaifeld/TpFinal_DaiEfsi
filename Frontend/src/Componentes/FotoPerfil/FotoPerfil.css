@@ -1,0 +1,35 @@
+/* Círculo de perfil: borde suave en reposo, dorado y más grueso al estar en /perfil */
+.foto-perfil {
+  display: block;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  border: 2px solid #e8e3da;
+  background-color: #ffffff;
+  overflow: hidden;
+  cursor: pointer;
+  box-sizing: border-box;
+  transition: border-color 0.2s ease, border-width 0.2s ease, transform 0.2s ease;
+}
+
+.foto-perfil:hover {
+  transform: scale(1.05);
+}
+
+.foto-perfil:focus-visible {
+  outline: 2px solid #c5a059;
+  outline-offset: 3px;
+}
+
+/* Estado seleccionado: estás en la sección Perfil */
+.foto-perfil--activo {
+  border-color: #c5a059;
+  border-width: 4px;
+}
+
+.foto-perfil__img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover; /* la foto llena el círculo sin deformarse */
+  display: block;
+}
