@@ -68,7 +68,7 @@ CREATE TABLE public.estado_lectura (
     id integer NOT NULL,
     usuario_id integer NOT NULL,
     libro_id integer NOT NULL,
-    estado character varying(30), -- Permite NULL para marcar favoritos sin estado
+    estado character varying(30),
     es_favorito boolean DEFAULT false,
     updated_at timestamp without time zone DEFAULT CURRENT_TIMESTAMP,
     CONSTRAINT estado_lectura_estado_check CHECK (((estado)::text = ANY ((ARRAY['Quiero leer'::character varying, 'Leyendo'::character varying, 'Leído'::character varying, 'Abandonado'::character varying])::text[])))
