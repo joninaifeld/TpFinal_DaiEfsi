@@ -1,55 +1,16 @@
-import './Perfil.css';
-import fotoPerfil from "../assets/FotoPerfilprueba";
+import "./perfil.css";
+import fotoPerfil from "../../assets/FotoPerfilPrueba.png";
+import TarjetaLibro from "../TarjetaLibro/TarjetaLibro";
+import Resenia from "../Resenia/Resenia";
 
-const favoritos = [
-  { id: 1, nombre: 'Nombre', rating: 0 },
-  { id: 2, nombre: 'Nombre', rating: 0 },
-  { id: 3, nombre: 'Nombre', rating: 0 },
-];
-
-const actividad = [
-  { id: 1, nombre: 'Nombre', rating: 0, estado: 'Leyendo', tipo: 'leyendo' },
-  { id: 2, nombre: 'Nombre', rating: 0, estado: 'Leyendo', tipo: 'leyendo' },
-  { id: 3, nombre: 'Nombre', rating: 0, estado: 'Recién terminado', tipo: 'terminado' },
-  { id: 4, nombre: 'Nombre', rating: 0, estado: 'Recién abandonado', tipo: 'abandonado' },
-];
-
-const resenias = [
-  { id: 1, libro: 'nombre libro', rating: 0, texto: 'lorem ipsum' },
-  { id: 2, libro: 'nombre libro', rating: 0, texto: 'lorem ipsum' },
-  { id: 3, libro: 'nombre libro', rating: 0, texto: 'lorem ipsum' },
-];
-
-function Estrellas({ valor = 0 }) {
-  return (
-    <div className="estrellas" aria-label={`${valor} de 5 estrellas`}>
-      {[1, 2, 3, 4, 5].map((n) => (
-        <span key={n} className={n <= valor ? 'estrella activa' : 'estrella'}>
-          ★
-        </span>
-      ))}
-    </div>
-  );
-}
-
-function TarjetaLibro({ nombre, rating, estado, tipo }) {
-  return (
-    <article className="tarjeta-libro">
-      <div className="portada">
-        <span>Libro</span>
-      </div>
-      <p className="tarjeta-libro__nombre">{nombre}</p>
-      <Estrellas valor={rating} />
-      {estado && <span className={`estado estado--${tipo}`}>{estado}</span>}
-    </article>
-  );
-}
-
-export default function Perfil({
-  nombreCompleto = 'nombre completo',
-  biografia = 'biografía',
-  generoPreferido = 'genero preferido:',
+function Perfil({
+  nombreCompleto = "nombre completo",
+  biografia = "biografía",
+  generoPreferido = "genero preferido:",
   foto = fotoPerfil,
+  favoritos = [],
+  actividad = [],
+  resenias = [],
   onEditarBiografia,
 }) {
   return (
@@ -81,8 +42,8 @@ export default function Perfil({
         <section className="seccion">
           <h2 className="seccion__titulo">Favoritos</h2>
           <div className="seccion__fila">
-            {favoritos.map((l) => (
-              <TarjetaLibro key={l.id} nombre={l.nombre} rating={l.rating} />
+            {favoritos.map((libro) => (
+              <TarjetaLibro key={libro.id} libro={libro} />
             ))}
           </div>
         </section>
@@ -90,8 +51,8 @@ export default function Perfil({
         <section className="seccion">
           <h2 className="seccion__titulo">Actividad</h2>
           <div className="seccion__fila">
-            {actividad.map((l) => (
-              <TarjetaLibro key={l.id} nombre={l.nombre} rating={l.rating} estado={l.estado} tipo={l.tipo} />
+            {actividad.map((libro) => (
+              <TarjetaLibro key={libro.id} libro={libro} />
             ))}
           </div>
         </section>
@@ -100,11 +61,7 @@ export default function Perfil({
           <h2 className="seccion__titulo">Reseñas</h2>
           <div className="seccion__fila">
             {resenias.map((r) => (
-              <article key={r.id} className="resenia">
-                <p className="resenia__libro">{r.libro}</p>
-                <Estrellas valor={r.rating} />
-                <p className="resenia__texto">{r.texto}</p>
-              </article>
+              <Resenia key={r.id} resenia={r} />
             ))}
           </div>
         </section>
@@ -112,3 +69,5 @@ export default function Perfil({
     </main>
   );
 }
+
+export default Perfil;
