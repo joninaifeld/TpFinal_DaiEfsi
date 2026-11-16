@@ -10,7 +10,7 @@ router.put('/perfil', verifyToken, async (req, res) => {
     const userId = req.user.id;
     const { biografia, foto_perfil, reading_goal_annual } = req.body;
 
-    const updatedUser = await svc.updateUser(userId, { biografia, foto_perfil, reading_goal_annual });
+    const updatedUser = await svc.updateUser(userId, { bio: biografia, avatar_url: foto_perfil, reading_goal_annual });
     return res.status(200).json({ 
         message: 'Perfil actualizado con éxito', 
         user: updatedUser 
