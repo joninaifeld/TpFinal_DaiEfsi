@@ -18,4 +18,10 @@ Hacemos de libros. Originalmente elegimos hacer de videojuegos pero no hay ningu
  - Alt + F3
  - Pegar el archivo script.sql
  - Ctrl + Script Execute
- - Click derecho en esquema public y tocar Refresh 
+ - Click derecho en esquema public y tocar Refresh
+
+## Roles
+- Jonatan Naifeld: Project Leader/ Fullstack
+- Santiago Hong: Backend
+- Santiago Choe: Frontend
+- Alan Laizerovich: Frontend
