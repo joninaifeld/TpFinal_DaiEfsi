@@ -1,10 +1,11 @@
 import config from '../config/dbconfig.js';
 import pkg from 'pg';
 import OpenLibraryService from './openLibraryService.js';
+import ActivityService from '../services/activityService.js';
 
 const { Client } = pkg;
 const olService = new OpenLibraryService();
-
+const activityService = new ActivityService();
 export default class CollectionService {  
     getColeccionByName = async (userId, nombre) => {
         const client = new Client(config);
@@ -32,6 +33,16 @@ export default class CollectionService {
             `;
             
             const result = await client.query(sql, [userId, nombre, descripcion || null]);
+
+            const nuevaCol = result.rows[0];
+            await activityService.logActivity(
+                userId,
+                'coleccion',
+                `Creó la colección "${nuevaCol.nombre}"`,
+                { coleccionId: nuevaCol.id },
+                client
+            );
+
             await client.end();
             return result.rows[0];
         } catch (error) {
@@ -97,6 +108,21 @@ export default class CollectionService {
             `;
             
             const result = await client.query(sql, [coleccionId, libroId]);
+
+            const infoRes = await client.query(
+                `SELECT l.titulo, c.nombre FROM libros l, colecciones c WHERE l.id = $1 AND c.id = $2`,
+                [libroId, coleccionId]
+            );
+            const { titulo, nombre } = infoRes.rows[0] || { titulo: olid, nombre: 'la colección' };
+
+            await activityService.logActivity(
+                userId,
+                'coleccion',
+                `Agregó "${titulo}" a la colección "${nombre}"`,
+                { libroId, coleccionId },
+                client
+            );
+
             await client.end();
             return result.rows[0];
         } catch (error) {
@@ -144,6 +170,16 @@ export default class CollectionService {
             `;
             
             const result = await client.query(sql, [coleccionId, olid]);
+
+            const { libro_id } = result.rows[0];
+            await activityService.logActivity(
+                userId,
+                'coleccion',
+                `Quitó un libro de una colección`,
+                { libroId: libro_id, coleccionId },
+                client
+            );
+
             await client.end();
             
             return result.rows.length > 0 ? result.rows[0] : null;

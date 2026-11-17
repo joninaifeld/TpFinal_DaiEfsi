@@ -1,7 +1,7 @@
 import { Router } from "express";
 import CollectionService from "../services/collectionService.js";
 import verifyToken from "../middlewares/authMiddleware.js";
-import { validaString } from "../helpers/valHelpers.js";
+import { validateString } from "../helpers/valHelpers.js";
 
 const router = Router();
 const svc = new CollectionService();
@@ -10,7 +10,7 @@ router.post("/", verifyToken, async (req, res) => {
   const userId = req.user.id;
   const { nombre, descripcion } = req.body;
 
-  if (!validaString(nombre)) {
+  if (!validateString(nombre)) {
     return res.status(400).json({ error: "El nombre de la colección es obligatorio" });
   }
 
@@ -38,7 +38,7 @@ router.post("/:id/libros", verifyToken, async (req, res) => {
   const coleccionId = req.params.id;
   const { olid } = req.body;
 
-  if (!validaString(olid)) {
+  if (!validateString(olid)) {
     return res.status(400).json({ error: "El identificador del libro (olid) es obligatorio" });
   }
 
@@ -67,7 +67,7 @@ router.delete("/:id/libros/:olid", verifyToken, async (req, res) => {
   const coleccionId = req.params.id;
   const { olid } = req.params;
 
-  if (!validaString(olid)) {
+  if (!validateString(olid)) {
     return res.status(400).json({ error: "El identificador del libro (olid) es obligatorio" });
   }
 
