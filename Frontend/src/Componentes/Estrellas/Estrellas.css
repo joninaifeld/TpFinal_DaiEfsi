@@ -1,0 +1,15 @@
+.estrellas {
+  display: flex;
+  gap: calc(1 * var(--u));
+  padding: 0 calc(3 * var(--u));
+  font-size: calc(8 * var(--u));
+  line-height: 1;
+}
+
+.estrella {
+  color: var(--estrella);
+}
+
+.estrella.activa {
+  color: #c9a24b;
+}

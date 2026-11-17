@@ -73,9 +73,14 @@ function Header({ fotoPerfil }) {
         ))}
       </nav>
 
-      <div className="header__perfil" data-ruta="/perfil">
-        <FotoPerfil foto={fotoPerfil} activo={seleccionado === "/perfil"} />
-      </div>
+   <Link
+  to="/perfil"
+  className="header__perfil"
+  data-ruta="/perfil"
+  aria-label="Ir a mi perfil"
+>
+  <FotoPerfil foto={fotoPerfil} activo={seleccionado === "/perfil"} />
+</Link>
 
       {/* Barra dorada que se desliza por debajo de todo el header */}
       <span

@@ -1,0 +1,36 @@
+.boton-agregar {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.35rem 0.8rem;
+  border: none;
+  border-radius: 6px;
+  background-color: #1b1e23;
+  color: #ffffff;
+  font-size: 0.8rem;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background-color 0.25s;
+}
+
+.boton-agregar:hover {
+  background-color: #333a44;
+}
+
+.boton-agregar:disabled {
+  cursor: default;
+  background-color: #1b1e23;
+}
+
+.boton-agregar--agregado,
+.boton-agregar--agregado:disabled {
+  background-color: #3f7d4e;
+}
+
+.boton-agregar:focus {
+  outline: none;
+}
+
+.boton-agregar__tilde {
+  font-weight: 700;
+}

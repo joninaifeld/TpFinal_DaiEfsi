@@ -1,0 +1,145 @@
+/* Fuente del diseño: Cormorant Garamond.
+   Agregá en index.html:
+   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&display=swap" rel="stylesheet"> */
+
+.perfil {
+  --fondo: #f8f6f1;
+  --blanco: #ffffff;
+  --borde-avatar: #e8e4da;
+  --texto: #1a1d21;
+  --estrella: #d9d9d9;
+  --portada: #ff3b3b;
+  /* 1 unidad = 1px del Figma (≈813px de ancho); escala con la pantalla */
+  /* Espacio que ocupan Header + Footer (ajustalo si cambian de alto) */
+  --reservado: 340px;
+  --u: clamp(1px, min(calc(100vw / 813), calc((100vh - var(--reservado)) / 435)), 2.4px);
+  --sombra: 0 calc(2 * var(--u)) calc(5 * var(--u)) rgba(0, 0, 0, 0.22);
+
+  display: flex;
+  align-items: flex-start;
+  gap: calc(42 * var(--u));
+  box-sizing: border-box;
+  width: 100%;
+  padding: calc(24 * var(--u)) calc(24 * var(--u)) calc(24 * var(--u)) calc(27 * var(--u));
+  background: var(--fondo);
+  color: var(--texto);
+  font-family: 'Cormorant Garamond', Georgia, serif;
+}
+
+.perfil *,
+.perfil *::before,
+.perfil *::after {
+  box-sizing: border-box;
+}
+
+.perfil p,
+.perfil h2 {
+  margin: 0;
+}
+
+/* ---------- Columna izquierda ---------- */
+.perfil__lateral {
+  display: flex;
+  flex-direction: column;
+  gap: calc(10 * var(--u));
+  flex: 0 0 calc(162 * var(--u));
+  width: calc(162 * var(--u));
+}
+
+.avatar {
+  width: calc(162 * var(--u));
+  height: calc(162 * var(--u));
+  margin-bottom: calc(-4 * var(--u));
+  border-radius: 50%;
+  background: var(--blanco);
+  border: calc(3 * var(--u)) solid var(--borde-avatar);
+  object-fit: cover;
+  object-position: 55% 22%;
+  display: block;
+}
+
+.campo {
+  width: calc(138 * var(--u));
+  padding: calc(3 * var(--u)) calc(5 * var(--u));
+  border-radius: calc(5 * var(--u));
+  background: var(--blanco);
+  box-shadow: var(--sombra);
+  font-size: calc(13 * var(--u));
+  line-height: 1.2;
+}
+
+.campo--nombre {
+  font-size: calc(14 * var(--u));
+}
+
+.campo--bio {
+  position: relative;
+  display: flex;
+  justify-content: space-between;
+  min-height: calc(22 * var(--u));
+  padding-right: calc(3 * var(--u));
+  font-size: calc(8 * var(--u));
+}
+
+.campo--genero {
+  font-size: calc(8 * var(--u));
+  min-height: calc(21 * var(--u));
+}
+
+.campo__editar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  margin-top: calc(-1 * var(--u));
+  border: 0;
+  background: transparent;
+  color: var(--texto);
+  cursor: pointer;
+}
+
+/* ---------- Columna derecha ---------- */
+.perfil__contenido {
+  display: flex;
+  flex-direction: column;
+  gap: calc(14 * var(--u));
+  flex: 1;
+  min-width: 0;
+}
+
+.seccion {
+  padding: calc(4 * var(--u)) calc(8 * var(--u)) calc(10 * var(--u));
+  border-radius: calc(5 * var(--u));
+  background: var(--blanco);
+  box-shadow: var(--sombra);
+}
+
+.seccion__titulo {
+  margin-bottom: calc(4 * var(--u));
+  font-size: calc(13 * var(--u));
+  font-weight: 500;
+  line-height: 1.2;
+}
+
+.seccion__fila {
+  display: flex;
+  flex-wrap: wrap;
+  gap: calc(3 * var(--u));
+}
+
+.seccion--resenias {
+  min-height: calc(85 * var(--u));
+}
+
+/* ---------- Responsive ---------- */
+@media (max-width: 720px) {
+  .perfil {
+    flex-direction: column;
+    align-items: center;
+    gap: calc(24 * var(--u));
+  }
+
+  .perfil__contenido {
+    width: 100%;
+  }
+}

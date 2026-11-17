@@ -1,0 +1,36 @@
+.boton-favorito {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.25rem;
+  border: none;
+  background-color: transparent;
+  cursor: pointer;
+  transition: transform 0.15s;
+}
+
+.boton-favorito:focus,
+.boton-favorito:focus-visible {
+  outline: none !important;
+}
+
+.boton-favorito:hover {
+  transform: scale(1.15);
+}
+
+.boton-favorito:active {
+  transform: scale(0.9);
+}
+
+.boton-favorito__icono {
+  fill: none;
+  stroke: #1b1e23;
+  stroke-width: 1.8;
+  stroke-linejoin: round;
+  transition: fill 0.2s, stroke 0.2s;
+}
+
+.boton-favorito--activo .boton-favorito__icono {
+  fill: #c0392b;
+  stroke: #c0392b;
+}
