@@ -24,4 +24,47 @@ export default class UserService {
             throw error;
         }
     }
+
+    getUserLibros = async (userId, { estado = null, soloFavoritos = false } = {}) => {
+        const client = new Client(config);
+        try {
+            await client.connect();
+
+            const conditions = ['el.usuario_id = $1'];
+            const values = [userId];
+
+            if (estado) {
+                values.push(estado);
+                conditions.push(`el.estado = $${values.length}`);
+            }
+
+            if (soloFavoritos) {
+                conditions.push(`el.es_favorito = true`);
+            }
+
+            const sql = `
+                SELECT 
+                    l.id,
+                    l.openlibrary_key,
+                    l.titulo,
+                    l.autor,
+                    l.cover_url,
+                    l.genero_principal,
+                    el.estado,
+                    el.es_favorito,
+                    el.updated_at
+                FROM estado_lectura el
+                JOIN libros l ON el.libro_id = l.id
+                WHERE ${conditions.join(' AND ')}
+                ORDER BY el.updated_at DESC;
+            `;
+
+            const result = await client.query(sql, values);
+            await client.end();
+            return result.rows;
+        } catch (error) {
+            await client.end();
+            throw new Error(`Error al obtener los libros del usuario: ${error.message}`);
+        }
+    }
 }

@@ -37,7 +37,24 @@ router.get('/actividad', verifyToken, async (req, res) => {
     console.error("Error al obtener actividad:", error);
     return res.status(500).json({ error: error.message });
   }
-}); 
+});
 
+router.get('/libros', verifyToken, async (req, res) => {
+  const { estado, favoritos } = req.query;
+
+  const estadosValidos = ['Quiero leer', 'Leyendo', 'Leído', 'Abandonado'];
+  if (estado && !estadosValidos.includes(estado)) {
+    return res.status(400).json({ error: "Estado de lectura inválido" });
+  }
+
+  try {
+    const soloFavoritos = favoritos === 'true';
+    const libros = await svc.getUserLibros(req.user.id, { estado, soloFavoritos });
+    return res.status(200).json(libros);
+  } catch (error) {
+    console.error("Error al obtener libros del usuario:", error);
+    return res.status(500).json({ error: error.message });
+  }
+});
 
 export default router;
