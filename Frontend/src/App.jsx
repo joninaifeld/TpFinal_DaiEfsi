@@ -4,6 +4,12 @@ import Footer from "./Componentes/Footer/Footer.jsx";
 import Login from "./Componentes/Login/Login.jsx";
 import Registro from "./Componentes/Registro/Registro.jsx";
 import fotoPrueba from "./assets/FotoPerfilprueba.png";
+import Perfil from "./Componentes/Perfil/Perfil";
+import {
+  favoritosPrueba,
+  actividadPrueba,
+  reseniasPrueba,
+} from "./Componentes/datosPrueba";
 import "./App.css";
 
 function AppContent(){

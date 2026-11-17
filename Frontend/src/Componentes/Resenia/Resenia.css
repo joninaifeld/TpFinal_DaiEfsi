@@ -1,0 +1,23 @@
+.resenia {
+  width: calc(78 * var(--u));
+  min-height: calc(37 * var(--u));
+  padding: calc(3 * var(--u)) calc(4 * var(--u));
+  border-radius: calc(5 * var(--u));
+  background: var(--blanco);
+  box-shadow: var(--sombra);
+}
+
+.resenia__libro {
+  font-size: calc(8 * var(--u));
+  line-height: 1.2;
+}
+
+.resenia .estrellas {
+  padding: 0;
+  font-size: calc(7 * var(--u));
+}
+
+.resenia__texto {
+  font-size: calc(7 * var(--u));
+  line-height: 1.2;
+}
