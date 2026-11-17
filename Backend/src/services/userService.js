@@ -19,6 +19,7 @@ export default class UserService {
             await client.end();
             return result.rows[0];
         } catch (error) {
+            await client.end();
             error.message = `Error al actualizar el perfil del usuario: ${error.message}`;
             throw error;
         }

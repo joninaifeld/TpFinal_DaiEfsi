@@ -2,7 +2,7 @@ import { Router } from "express";
 import OpenLibraryService from "../services/openLibraryService.js";
 import BookService from "../services/bookService.js";
 import verifyToken from "../middlewares/authMiddleware.js";
-import { validaString } from "../helpers/valHelpers.js";
+import { validateString } from "../helpers/valHelpers.js";
 
 const router = Router();
 const olSvc = new OpenLibraryService();
@@ -12,7 +12,7 @@ const bookSvc = new BookService();
 router.get("/buscar", async (req, res) => {
   const { q, page = 1 } = req.query;
 
-  if (!validaString(q)) {
+  if (!validateString(q)) {
     return res.status(400).json({ error: "Falta el parámetro q" });
   }
 
