@@ -1,0 +1,256 @@
+.home {
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+  background-color: var(--bg);
+}
+
+/* Saludo */
+.home__saludo {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.home__saludo_nombre {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--text);
+}
+
+.home__saludo_sub {
+  font-size: 0.95rem;
+  color: var(--muted);
+}
+
+/* Widgets superiores */
+.home__widgets {
+  display: flex;
+  gap: 24px;
+  flex-wrap: wrap;
+}
+
+/* Widget reto */
+.home__widget_reto {
+  flex: 1;
+  min-width: 260px;
+  max-width: 380px;
+  background-color: var(--surface);
+  border-radius: 10px;
+  padding: 24px;
+  box-shadow: 0 2px 8px rgba(24, 28, 32, 0.08);
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.home__reto_titulo {
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: var(--text);
+}
+
+.home__reto_progreso {
+  font-size: 0.9rem;
+  color: var(--muted);
+}
+
+.home__reto_barra_fondo {
+  height: 12px;
+  background-color: var(--border);
+  border-radius: 6px;
+  overflow: hidden;
+}
+
+.home__reto_barra_fill {
+  height: 100%;
+  background-color: var(--accent);
+  border-radius: 6px;
+  transition: width 0.4s ease;
+}
+
+/* Widget leyendo actualmente */
+.home__widget_leyendo {
+  background-color: var(--surface);
+  border-radius: 10px;
+  padding: 20px 24px;
+  box-shadow: 0 2px 8px rgba(24, 28, 32, 0.08);
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  min-width: 280px;
+}
+
+.home__leyendo_label {
+  font-size: 0.9rem;
+  color: var(--muted);
+}
+
+.home__leyendo_contenido {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+}
+
+.home__leyendo_portada {
+  width: 64px;
+  height: 88px;
+  border-radius: 5px;
+  background-size: cover;
+  background-position: center;
+  flex-shrink: 0;
+}
+
+.home__leyendo_info {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.home__leyendo_titulo {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--text);
+}
+
+.home__leyendo_autor {
+  font-size: 0.85rem;
+  color: var(--muted);
+}
+
+.home__leyendo_badge {
+  display: inline-block;
+  margin-top: 6px;
+  padding: 3px 12px;
+  background-color: var(--border);
+  border-radius: 20px;
+  font-size: 0.8rem;
+  color: var(--text);
+  align-self: flex-start;
+}
+
+/* Título de sección */
+.home__seccion_titulo {
+  font-family: "Cormorant Garamond", Georgia, serif;
+  font-size: 1.5rem;
+  font-weight: 500;
+  margin: 0 0 18px 0;
+  color: var(--text);
+}
+
+/* Novedades */
+.home__novedades_grilla {
+  display: flex;
+  gap: 18px;
+  flex-wrap: wrap;
+}
+
+.home__novedades_item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+
+/* Columna: favoritos arriba, actividad abajo */
+.home__columna_lateral {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  max-width: 320px;
+}
+
+/* Favoritos recientes */
+.home__seccion_favoritos {
+  background-color: var(--surface);
+  border-radius: 10px;
+  padding: 20px;
+  box-shadow: 0 2px 8px rgba(24, 28, 32, 0.08);
+}
+
+.home__favoritos_fila {
+  display: flex;
+  gap: 14px;
+  flex-wrap: wrap;
+}
+
+.home__favorito_item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+}
+
+.home__favorito_nombre {
+  font-size: 0.75rem;
+  color: var(--text);
+  text-align: center;
+  max-width: 64px;
+}
+
+/* Actividad reciente */
+.home__seccion_actividad {
+  background-color: var(--surface);
+  border-radius: 10px;
+  padding: 20px;
+  box-shadow: 0 2px 8px rgba(24, 28, 32, 0.08);
+}
+
+.home__actividad_lista {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.home__actividad_item {
+  font-size: 0.9rem;
+  color: var(--muted);
+}
+
+/* Colecciones */
+.home__colecciones_fila {
+  display: flex;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+.home__coleccion_card {
+  background-color: var(--surface);
+  border-radius: 10px;
+  padding: 16px;
+  box-shadow: 0 2px 8px rgba(24, 28, 32, 0.08);
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  align-items: flex-start;
+}
+
+.home__coleccion_portadas {
+  display: flex;
+  border-radius: 6px;
+  overflow: hidden;
+}
+
+.home__coleccion_nombre {
+  font-size: 0.85rem;
+  color: var(--text);
+}
+
+/* Mini portada reutilizable */
+.mini_portada {
+  width: 64px;
+  height: 88px;
+  background-size: cover;
+  background-position: center;
+  border-radius: 5px;
+  flex-shrink: 0;
+}
+
+.home__coleccion_portadas .mini_portada {
+  border-radius: 0;
+  width: 64px;
+  height: 88px;
+}
