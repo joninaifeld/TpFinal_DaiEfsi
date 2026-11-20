@@ -44,7 +44,6 @@ function Estadisticas() {
     <div className="estadisticas">
       <h1 className="estadisticas__titulo">Mis estadísticas</h1>
 
-      {/* Fila 1: Biblioteca — Géneros — Colecciones */}
       <div className="estadisticas__fila">
 
         <TarjetaStat titulo="Mi biblioteca">
@@ -85,7 +84,6 @@ function Estadisticas() {
 
       </div>
 
-      {/* Fila 2: Libros guardados — Favoritos — Valoraciones */}
       <div className="estadisticas__fila">
 
         <TarjetaStat titulo="Libros guardados">

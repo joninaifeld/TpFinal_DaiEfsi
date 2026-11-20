@@ -1,0 +1,197 @@
+.coleccion {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.coleccion__encabezado {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.coleccion__titulo_fila {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.coleccion__descripcion_fila {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+}
+
+.coleccion__titulo {
+  font-family: "Cormorant Garamond", Georgia, serif;
+  font-size: 2.4rem;
+  font-weight: 400;
+  color: var(--text);
+  margin: 0;
+}
+
+.coleccion__descripcion {
+  font-size: 0.95rem;
+  color: var(--muted);
+  max-width: 640px;
+  line-height: 1.6;
+  margin: 0;
+}
+
+.coleccion__btn_editar {
+  background: none;
+  border: none;
+  padding: 4px;
+  cursor: pointer;
+  color: var(--muted);
+  display: flex;
+  align-items: center;
+  border-radius: 4px;
+  transition: color 0.2s;
+  flex-shrink: 0;
+}
+
+.coleccion__btn_editar:hover {
+  color: var(--text);
+}
+
+.coleccion__btn_editar--desc {
+  margin-top: 2px;
+}
+
+/* Controles: filtros a la izquierda, buscador+orden a la derecha */
+.coleccion__controles {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+/* Chips de filtro de estado */
+.coleccion__filtros_grupo {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.coleccion__filtros {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2px;
+}
+
+.coleccion__filtro_btn {
+  padding: 0.3rem 1rem;
+  border: none;
+  border-radius: 20px;
+  background-color: transparent;
+  color: var(--muted);
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: color 0.2s;
+}
+
+.coleccion__filtro_btn:hover {
+  color: var(--text);
+}
+
+.coleccion__filtro_btn--activo {
+  color: var(--text);
+  font-weight: 600;
+  border-bottom: 2px solid var(--accent);
+  border-radius: 0;
+}
+
+/* Separador vertical entre estados y favoritos */
+.coleccion__separador_v {
+  width: 1px;
+  height: 20px;
+  background-color: var(--border);
+  margin: 0 8px;
+  flex-shrink: 0;
+}
+
+/* Botón toggle Favoritos */
+.coleccion__favoritos_btn {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  padding: 0.3rem 0.9rem;
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  background-color: transparent;
+  color: var(--muted);
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: color 0.2s, border-color 0.2s, background-color 0.2s;
+}
+
+.coleccion__favoritos_btn:hover {
+  color: var(--text);
+  border-color: var(--muted);
+}
+
+.coleccion__favoritos_btn--activo {
+  background-color: var(--accent);
+  border-color: var(--accent);
+  color: var(--surface);
+}
+
+/* Buscador + orden */
+.coleccion__controles_derecha {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.coleccion__buscador {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 0.4rem 0.8rem;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background-color: var(--surface);
+}
+
+.coleccion__buscador_icono {
+  color: var(--muted);
+  flex-shrink: 0;
+}
+
+.coleccion__buscador_input {
+  border: none;
+  outline: none;
+  background: transparent;
+  font-size: 0.9rem;
+  color: var(--text);
+  width: 180px;
+}
+
+.coleccion__buscador_input::placeholder {
+  color: var(--muted);
+}
+
+.coleccion__orden {
+  padding: 0.4rem 0.8rem;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background-color: var(--surface);
+  font-size: 0.9rem;
+  color: var(--text);
+  cursor: pointer;
+}
+
+/* Grilla de libros */
+.coleccion__grilla {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 1.25rem;
+}
+
+.coleccion__vacio {
+  font-size: 1rem;
+  color: var(--muted);
+  padding: 2rem 0;
+}

@@ -16,6 +16,7 @@ import {
 } from "./Componentes/datosPrueba";
 
 import Biblioteca from "./Componentes/Biblioteca/Biblioteca";
+import Coleccion from "./Componentes/Coleccion/Coleccion.jsx";
 import { coleccionesPrueba } from "./Componentes/datosbiblioteca.js";
 import "./App.css";
 
@@ -36,8 +37,8 @@ function AppContent(){
           <Route path="/explorar" element={<Explorar />} />
           <Route path="/perfil" element={<Perfil />} />
           <Route path="/estadisticas" element={<Estadisticas />} />
-          <Route path="/biblioteca" element={<Biblioteca/>}
-/>
+          <Route path="/biblioteca" element={<Biblioteca/>} />
+          <Route path="/coleccion" element={<Coleccion />} />
         </Routes>
       </main>
 

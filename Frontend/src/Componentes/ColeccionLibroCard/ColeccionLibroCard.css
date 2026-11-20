@@ -1,0 +1,99 @@
+.coleccion_libro_card {
+  display: flex;
+  gap: 1rem;
+  padding: 0.9rem;
+  background-color: var(--surface);
+  border-radius: 10px;
+  box-shadow: 0 2px 8px rgba(24, 28, 32, 0.12);
+}
+
+.coleccion_libro_card__portada {
+  width: 96px;
+  height: 140px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: flex-end;
+  padding: 0.4rem;
+  border-radius: 6px;
+  background-color: var(--border);
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  font-size: 0.8rem;
+  color: var(--muted);
+}
+
+.coleccion_libro_card__info {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+.coleccion_libro_card__genero {
+  align-self: flex-end;
+  padding: 0.1rem 0.6rem;
+  border-radius: 6px;
+  background-color: var(--border);
+  font-size: 0.75rem;
+  color: var(--text);
+}
+
+.coleccion_libro_card__titulo {
+  margin: 0.3rem 0 0 0;
+  font-family: "Cormorant Garamond", Georgia, serif;
+  font-weight: 500;
+  font-size: 1.15rem;
+  color: var(--text);
+}
+
+.coleccion_libro_card__autor {
+  margin: 0.1rem 0 0.5rem 0;
+  font-size: 0.85rem;
+  color: var(--muted);
+}
+
+.coleccion_libro_card__rating {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.8rem;
+  color: var(--muted);
+}
+
+.coleccion_libro_card__acciones {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  margin-top: auto;
+  padding-top: 0.6rem;
+}
+
+/* Badge de estado */
+.coleccion_libro_card__estado {
+  padding: 0.25rem 0.75rem;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  background-color: var(--border);
+  color: var(--text);
+}
+
+.coleccion_libro_card__estado--leido {
+  background-color: var(--primary);
+  color: var(--surface);
+}
+
+.coleccion_libro_card__estado--leyendo {
+  background-color: var(--accent);
+  color: var(--surface);
+}
+
+.coleccion_libro_card__estado--abandonado {
+  background-color: var(--muted);
+  color: var(--surface);
+}
+
+.coleccion_libro_card__estado--quiero_leer {
+  background-color: var(--border);
+  color: var(--text);
+}

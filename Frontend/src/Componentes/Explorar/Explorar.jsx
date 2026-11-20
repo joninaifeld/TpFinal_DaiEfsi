@@ -149,13 +149,19 @@ function Explorar() {
       </header>
 
       <form className="explorar__buscador" onSubmit={buscar} role="search">
-        <input
-          type="search"
-          className="explorar__input"
-          value={texto}
-          onChange={(e) => setTexto(e.target.value)}
-          aria-label="Buscar libros por título o autor"
-        />
+        <div className="explorar__buscador_campo">
+          <svg className="explorar__buscador_icono" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <circle cx="11" cy="11" r="8" />
+            <line x1="21" y1="21" x2="16.65" y2="16.65" />
+          </svg>
+          <input
+            type="search"
+            className="explorar__input"
+            value={texto}
+            onChange={(e) => setTexto(e.target.value)}
+            aria-label="Buscar libros por título o autor"
+          />
+        </div>
         <button type="submit" className="explorar__btn-buscar">
           Buscar
         </button>

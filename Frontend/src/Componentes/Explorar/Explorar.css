@@ -23,16 +23,33 @@
   display: flex;
   max-width: 640px;
   margin-bottom: 1.25rem;
+  gap: 0;
 }
 
-.explorar__input {
+.explorar__buscador_campo {
+  display: flex;
+  align-items: center;
+  gap: 6px;
   flex: 1;
   padding: 0.6rem 0.9rem;
   border: 1px solid #e2dccf;
   border-right: none;
   border-radius: 8px 0 0 8px;
   background-color: #ffffff;
+}
+
+.explorar__buscador_icono {
+  color: var(--muted);
+  flex-shrink: 0;
+}
+
+.explorar__input {
+  flex: 1;
+  border: none;
+  outline: none;
+  background: transparent;
   font-size: 1rem;
+  color: var(--text);
 }
 
 .explorar__btn-buscar {
