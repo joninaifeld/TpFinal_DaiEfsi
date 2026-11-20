@@ -1,5 +1,5 @@
 --
--- PostgreSQL database dump (Actualizado)
+-- PostgreSQL database dump (Actualizado con tabla actividades)
 --
 
 SET statement_timeout = 0;
@@ -26,6 +26,41 @@ SET default_table_access_method = heap;
 
 
 --
+-- Name: actividades; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.actividades (
+    id integer NOT NULL,
+    usuario_id integer NOT NULL,
+    tipo_accion character varying(50) NOT NULL,
+    descripcion text NOT NULL,
+    libro_id integer,
+    coleccion_id integer,
+    created_at timestamp without time zone DEFAULT CURRENT_TIMESTAMP
+);
+
+
+ALTER TABLE public.actividades OWNER TO postgres;
+
+--
+-- Name: actividades_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.actividades_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER SEQUENCE public.actividades_id_seq OWNER TO postgres;
+
+ALTER SEQUENCE public.actividades_id_seq OWNED BY public.actividades.id;
+
+
+--
 -- Name: estado_lectura; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -33,7 +68,7 @@ CREATE TABLE public.estado_lectura (
     id integer NOT NULL,
     usuario_id integer NOT NULL,
     libro_id integer NOT NULL,
-    estado character varying(30), -- Permite NULL para marcar favoritos sin estado
+    estado character varying(30),
     es_favorito boolean DEFAULT false,
     updated_at timestamp without time zone DEFAULT CURRENT_TIMESTAMP,
     CONSTRAINT estado_lectura_estado_check CHECK (((estado)::text = ANY ((ARRAY['Quiero leer'::character varying, 'Leyendo'::character varying, 'Leído'::character varying, 'Abandonado'::character varying])::text[])))
@@ -228,6 +263,7 @@ ALTER TABLE ONLY public.valoraciones_resenas ALTER COLUMN id SET DEFAULT nextval
 -- Sequences Setting
 --
 
+SELECT pg_catalog.setval('public.actividades_id_seq', 1, true);
 SELECT pg_catalog.setval('public.estado_lectura_id_seq', 1, true);
 SELECT pg_catalog.setval('public.colecciones_id_seq', 1, true);
 SELECT pg_catalog.setval('public.libros_id_seq', 1, true);
@@ -238,6 +274,9 @@ SELECT pg_catalog.setval('public.valoraciones_resenas_id_seq', 1, true);
 --
 -- Constraints & Indexes
 --
+
+ALTER TABLE ONLY public.actividades
+    ADD CONSTRAINT actividades_pkey PRIMARY KEY (id);
 
 ALTER TABLE ONLY public.estado_lectura
     ADD CONSTRAINT estado_lectura_pkey PRIMARY KEY (id);
@@ -272,7 +311,6 @@ ALTER TABLE ONLY public.usuarios
 ALTER TABLE ONLY public.valoraciones_resenas
     ADD CONSTRAINT valoraciones_resenas_pkey PRIMARY KEY (id);
 
--- Restricciones únicas y de nombres para colecciones
 ALTER TABLE ONLY public.colecciones
     ADD CONSTRAINT uq_usuario_nombre_coleccion UNIQUE (usuario_id, nombre);
 
@@ -280,10 +318,21 @@ CREATE INDEX idx_libros_openlibrary_key ON public.libros USING btree (openlibrar
 
 CREATE INDEX idx_colecciones_usuario ON public.colecciones USING btree (usuario_id);
 
+CREATE INDEX idx_actividades_usuario ON public.actividades USING btree (usuario_id);
+
 
 --
 -- Foreign Keys
 --
+
+ALTER TABLE ONLY public.actividades
+    ADD CONSTRAINT actividades_usuario_id_fkey FOREIGN KEY (usuario_id) REFERENCES public.usuarios(id) ON DELETE CASCADE;
+
+ALTER TABLE ONLY public.actividades
+    ADD CONSTRAINT actividades_libro_id_fkey FOREIGN KEY (libro_id) REFERENCES public.libros(id) ON DELETE SET NULL;
+
+ALTER TABLE ONLY public.actividades
+    ADD CONSTRAINT actividades_coleccion_id_fkey FOREIGN KEY (coleccion_id) REFERENCES public.colecciones(id) ON DELETE SET NULL;
 
 ALTER TABLE ONLY public.estado_lectura
     ADD CONSTRAINT estado_lectura_libro_id_fkey FOREIGN KEY (libro_id) REFERENCES public.libros(id) ON DELETE CASCADE;

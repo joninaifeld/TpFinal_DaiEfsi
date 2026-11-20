@@ -1,0 +1,258 @@
+/* ===== Explorar ===== */
+.explorar {
+  background-color: #f6f3ee;
+  color: #1b1e23;
+  padding: 2.5rem 5% 3rem;
+  min-height: 70vh;
+}
+
+.explorar__titulo {
+  font-family: "Cormorant Garamond", Georgia, serif;
+  font-weight: 400;
+  font-size: 2.6rem;
+  margin: 0 0 0.25rem 0;
+}
+
+.explorar__subtitulo {
+  font-size: 0.95rem;
+  margin: 0 0 1.5rem 0;
+}
+
+/* Buscador */
+.explorar__buscador {
+  display: flex;
+  max-width: 640px;
+  margin-bottom: 1.25rem;
+}
+
+.explorar__input {
+  flex: 1;
+  padding: 0.6rem 0.9rem;
+  border: 1px solid #e2dccf;
+  border-right: none;
+  border-radius: 8px 0 0 8px;
+  background-color: #ffffff;
+  font-size: 1rem;
+}
+
+.explorar__btn-buscar {
+  padding: 0.6rem 1.5rem;
+  border: none;
+  border-radius: 0 8px 8px 0;
+  background-color: #1b1e23;
+  color: #ffffff;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.explorar__btn-buscar:hover {
+  background-color: #333a44;
+}
+
+/* Filtros y selects */
+.explorar__filtros {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 1.2rem;
+  margin-bottom: 1rem;
+}
+
+.explorar__selects {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+}
+
+.explorar__select {
+  padding: 0.45rem 0.8rem;
+  border: 1px solid #e2dccf;
+  border-radius: 8px;
+  background-color: #ffffff;
+  font-size: 0.95rem;
+  cursor: pointer;
+}
+
+.explorar__estado {
+  margin: 0;
+  padding-left: 1.25rem;
+  border-left: 1px solid #1b1e23;
+  font-size: 0.9rem;
+  max-width: 240px;
+}
+
+/* Botones de categorías (Chips) */
+.explorar__chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-bottom: 2rem;
+}
+
+.explorar__chip {
+  padding: 0.3rem 0.9rem;
+  border: 1px solid #c4a265;
+  border-radius: 8px;
+  background-color: #f3e8d2;
+  color: #1b1e23;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: background-color 0.2s, color 0.2s;
+}
+
+.explorar__chip:hover {
+  background-color: #ead9b6;
+}
+
+.explorar__chip--activo,
+.explorar__chip--activo:hover {
+  background-color: #c4a265;
+  color: #ffffff;
+}
+
+/* Grilla de resultados */
+.explorar__subtitulo-seccion {
+  font-family: "Cormorant Garamond", Georgia, serif;
+  font-weight: 400;
+  font-size: 1.6rem;
+  margin: 0 0 1.25rem 0;
+}
+
+.explorar__grilla {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 1.5rem;
+}
+
+.explorar__vacio {
+  padding: 2rem 0;
+}
+
+/* Paginación */
+.explorar__paginacion {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.4rem;
+  margin-top: 3rem;
+}
+
+.explorar__pag-btn {
+  min-width: 2rem;
+  padding: 0.3rem 0.5rem;
+  border: none;
+  background-color: transparent;
+  font-family: "Cormorant Garamond", Georgia, serif;
+  font-size: 1.1rem;
+  color: #1b1e23;
+  cursor: pointer;
+  border-radius: 6px;
+}
+
+.explorar__pag-btn:hover {
+  background-color: #f3e8d2;
+}
+
+.explorar__pag-btn:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+  background-color: transparent;
+}
+
+.explorar__pag-btn--activa {
+  background-color: #c4a265;
+  color: #ffffff;
+}
+
+.explorar button:focus,
+.explorar select:focus,
+.explorar input:focus {
+  outline: 2px solid #c4a265;
+  outline-offset: 2px;
+}
+
+/* ===== Tarjeta de Explorar ===== */
+.explorar-card {
+  display: flex;
+  gap: 1rem;
+  padding: 0.9rem;
+  background-color: #ffffff;
+  border-radius: 10px;
+  box-shadow: 0 2px 8px rgba(27, 30, 35, 0.12);
+}
+
+.explorar-card__portada {
+  width: 96px;
+  height: 140px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: flex-end;
+  padding: 0.4rem;
+  border-radius: 6px;
+  background-color: #f3e8d2;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  font-size: 0.8rem;
+}
+
+.explorar-card__info {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+.explorar-card__genero {
+  align-self: flex-end;
+  padding: 0.1rem 0.6rem;
+  border-radius: 6px;
+  background-color: #ece8df;
+  font-size: 0.75rem;
+}
+
+.explorar-card__titulo {
+  margin: 0.3rem 0 0 0;
+  font-family: "Cormorant Garamond", Georgia, serif;
+  font-weight: 500;
+  font-size: 1.15rem;
+}
+
+.explorar-card__autor {
+  margin: 0.1rem 0 0.5rem 0;
+  font-size: 0.85rem;
+  opacity: 0.75;
+}
+
+.explorar-card__rating {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.8rem;
+}
+
+.explorar-card__acciones {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  margin-top: auto;
+  padding-top: 0.6rem;
+}
+
+/* ===== Celular ===== */
+@media (max-width: 600px) {
+  .explorar__titulo {
+    font-size: 2rem;
+  }
+
+  .explorar__estado {
+    border-left: none;
+    padding-left: 0;
+    max-width: none;
+  }
+
+  .explorar__grilla {
+    grid-template-columns: 1fr;
+  }
+}

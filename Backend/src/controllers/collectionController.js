@@ -1,16 +1,44 @@
 import { Router } from "express";
 import CollectionService from "../services/collectionService.js";
 import verifyToken from "../middlewares/authMiddleware.js";
-import { validaString } from "../helpers/valHelpers.js";
+import { validateString } from "../helpers/valHelpers.js";
 
 const router = Router();
 const svc = new CollectionService();
+
+router.get("/", verifyToken, async (req, res) => {
+  try {
+    const colecciones = await svc.getUserColecciones(req.user.id);
+    return res.status(200).json(colecciones);
+  } catch (error) {
+    console.error("Error al listar colecciones:", error);
+    return res.status(500).json({ error: error.message });
+  }
+});
+
+router.get("/:id", verifyToken, async (req, res) => {
+  const coleccionId = Number(req.params.id);
+  if (!Number.isInteger(coleccionId) || coleccionId <= 0) {
+    return res.status(400).json({ error: "ID de colección inválido" });
+  }
+
+  try {
+    const coleccion = await svc.getColeccionDetail(coleccionId, req.user.id);
+    if (!coleccion) {
+      return res.status(404).json({ error: "Colección no encontrada o no te pertenece" });
+    }
+    return res.status(200).json(coleccion);
+  } catch (error) {
+    console.error("Error al obtener detalle de colección:", error);
+    return res.status(500).json({ error: error.message });
+  }
+});
 
 router.post("/", verifyToken, async (req, res) => {
   const userId = req.user.id;
   const { nombre, descripcion } = req.body;
 
-  if (!validaString(nombre)) {
+  if (!validateString(nombre)) {
     return res.status(400).json({ error: "El nombre de la colección es obligatorio" });
   }
 
@@ -38,7 +66,7 @@ router.post("/:id/libros", verifyToken, async (req, res) => {
   const coleccionId = req.params.id;
   const { olid } = req.body;
 
-  if (!validaString(olid)) {
+  if (!validateString(olid)) {
     return res.status(400).json({ error: "El identificador del libro (olid) es obligatorio" });
   }
 
@@ -67,7 +95,7 @@ router.delete("/:id/libros/:olid", verifyToken, async (req, res) => {
   const coleccionId = req.params.id;
   const { olid } = req.params;
 
-  if (!validaString(olid)) {
+  if (!validateString(olid)) {
     return res.status(400).json({ error: "El identificador del libro (olid) es obligatorio" });
   }
 
@@ -124,6 +152,27 @@ router.put("/:id", verifyToken, async (req, res) => {
     console.error("Error al actualizar colección:", error);
     const status = error.message.includes('no encontrada') ? 404 : 500;
     return res.status(status).json({ error: error.message });
+  }
+});
+
+router.delete("/:id", verifyToken, async (req, res) => {
+  const coleccionId = Number(req.params.id);
+  if (!Number.isInteger(coleccionId) || coleccionId <= 0) {
+    return res.status(400).json({ error: "ID de colección inválido" });
+  }
+
+  try {
+    const eliminada = await svc.deleteColeccion(coleccionId, req.user.id);
+    if (!eliminada) {
+      return res.status(404).json({ error: "Colección no encontrada o no te pertenece" });
+    }
+    return res.status(200).json({ 
+      message: "Colección eliminada con éxito",
+      coleccion: eliminada
+    });
+  } catch (error) {
+    console.error("Error al eliminar colección:", error);
+    return res.status(500).json({ error: error.message });
   }
 });
 

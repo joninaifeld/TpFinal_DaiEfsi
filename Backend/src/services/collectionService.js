@@ -1,11 +1,84 @@
 import config from '../config/dbconfig.js';
 import pkg from 'pg';
 import OpenLibraryService from './openLibraryService.js';
+import ActivityService from '../services/activityService.js';
 
 const { Client } = pkg;
 const olService = new OpenLibraryService();
-
+const activityService = new ActivityService();
 export default class CollectionService {  
+    getUserColecciones = async (userId) => {
+        const client = new Client(config);
+        try {
+            await client.connect();
+            const sql = `
+                SELECT 
+                    c.id, 
+                    c.nombre, 
+                    c.descripcion, 
+                    c.created_at,
+                    COUNT(cl.libro_id)::int AS cantidad_libros
+                FROM colecciones c
+                LEFT JOIN coleccion_libros cl ON c.id = cl.coleccion_id
+                WHERE c.usuario_id = $1
+                GROUP BY c.id
+                ORDER BY c.created_at DESC;
+            `;
+            const result = await client.query(sql, [userId]);
+            await client.end();
+            return result.rows;
+        } catch (error) {
+            await client.end();
+            throw new Error(`Error al obtener colecciones: ${error.message}`);
+        }
+    }
+
+    getColeccionDetail = async (coleccionId, userId) => {
+        const client = new Client(config);
+        try {
+            await client.connect();
+
+            const colSql = `
+                SELECT id, nombre, descripcion, created_at
+                FROM colecciones
+                WHERE id = $1 AND usuario_id = $2;
+            `;
+            const colRes = await client.query(colSql, [coleccionId, userId]);
+            if (colRes.rows.length === 0) {
+                await client.end();
+                return null;
+            }
+
+            const librosSql = `
+                SELECT 
+                    l.id,
+                    l.openlibrary_key,
+                    l.titulo,
+                    l.autor,
+                    l.cover_url,
+                    l.genero_principal,
+                    cl.added_at,
+                    el.estado,
+                    COALESCE(el.es_favorito, false) AS es_favorito
+                FROM coleccion_libros cl
+                JOIN libros l ON cl.libro_id = l.id
+                LEFT JOIN estado_lectura el ON el.libro_id = l.id AND el.usuario_id = $2
+                WHERE cl.coleccion_id = $1
+                ORDER BY cl.added_at DESC;
+            `;
+            const librosRes = await client.query(librosSql, [coleccionId, userId]);
+            await client.end();
+
+            return {
+                ...colRes.rows[0],
+                libros: librosRes.rows
+            };
+        } catch (error) {
+            await client.end();
+            throw new Error(`Error al obtener detalle de la colección: ${error.message}`);
+        }
+    }
+    
     getColeccionByName = async (userId, nombre) => {
         const client = new Client(config);
         try {
@@ -32,6 +105,16 @@ export default class CollectionService {
             `;
             
             const result = await client.query(sql, [userId, nombre, descripcion || null]);
+
+            const nuevaCol = result.rows[0];
+            await activityService.logActivity(
+                userId,
+                'coleccion',
+                `Creó la colección "${nuevaCol.nombre}"`,
+                { coleccionId: nuevaCol.id },
+                client
+            );
+
             await client.end();
             return result.rows[0];
         } catch (error) {
@@ -97,6 +180,21 @@ export default class CollectionService {
             `;
             
             const result = await client.query(sql, [coleccionId, libroId]);
+
+            const infoRes = await client.query(
+                `SELECT l.titulo, c.nombre FROM libros l, colecciones c WHERE l.id = $1 AND c.id = $2`,
+                [libroId, coleccionId]
+            );
+            const { titulo, nombre } = infoRes.rows[0] || { titulo: olid, nombre: 'la colección' };
+
+            await activityService.logActivity(
+                userId,
+                'coleccion',
+                `Agregó "${titulo}" a la colección "${nombre}"`,
+                { libroId, coleccionId },
+                client
+            );
+
             await client.end();
             return result.rows[0];
         } catch (error) {
@@ -144,6 +242,16 @@ export default class CollectionService {
             `;
             
             const result = await client.query(sql, [coleccionId, olid]);
+
+            const { libro_id } = result.rows[0];
+            await activityService.logActivity(
+                userId,
+                'coleccion',
+                `Quitó un libro de una colección`,
+                { libroId: libro_id, coleccionId },
+                client
+            );
+
             await client.end();
             
             return result.rows.length > 0 ? result.rows[0] : null;
@@ -153,7 +261,7 @@ export default class CollectionService {
         }
     }
 
-    async updateColeccion(coleccionId, userId, nombre, descripcion) {
+    updateColeccion = async (coleccionId, userId, nombre, descripcion) => {
         const coleccion = await this.getColeccionByIdAndUser(coleccionId, userId);
         if (!coleccion) {
             throw new Error("Colección no encontrada o no te pertenece");
@@ -178,6 +286,35 @@ export default class CollectionService {
         } catch (error) {
             await client.end();
             throw new Error(`Error al actualizar la colección: ${error.message}`);
+        }
+    }
+
+    deleteColeccion = async (coleccionId, userId) => {
+        const client = new Client(config);
+        try {
+            await client.connect();
+            const sql = `
+                DELETE FROM colecciones
+                WHERE id = $1 AND usuario_id = $2
+                RETURNING id, nombre;
+            `;
+            const result = await client.query(sql, [coleccionId, userId]);
+
+            if (result.rows.length > 0) {
+                await activityService.logActivity(
+                    userId,
+                    'coleccion',
+                    `Eliminó la colección "${result.rows[0].nombre}"`,
+                    {},
+                    client
+                );
+            }
+
+            await client.end();
+            return result.rows[0] || null;
+        } catch (error) {
+            await client.end();
+            throw new Error(`Error al eliminar la colección: ${error.message}`);
         }
     }
 }

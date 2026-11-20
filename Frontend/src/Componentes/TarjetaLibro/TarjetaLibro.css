@@ -1,0 +1,54 @@
+.tarjeta-libro {
+  display: flex;
+  flex-direction: column;
+  width: calc(78 * var(--u));
+  min-height: calc(110 * var(--u));
+  padding: calc(13 * var(--u)) 0 calc(4 * var(--u));
+  border-radius: calc(5 * var(--u));
+  background: var(--blanco);
+  box-shadow: var(--sombra);
+}
+
+.portada {
+  display: flex;
+  align-items: flex-end;
+  align-self: center;
+  width: calc(41 * var(--u));
+  height: calc(57 * var(--u));
+  padding: 0 calc(3 * var(--u)) calc(3 * var(--u));
+  margin-bottom: calc(4 * var(--u));
+  border-radius: calc(5 * var(--u));
+  background-color: var(--portada);
+  background-size: cover;
+  background-position: center;
+  box-shadow: 0 calc(1 * var(--u)) calc(3 * var(--u)) rgba(0, 0, 0, 0.2);
+  font-size: calc(10 * var(--u));
+}
+
+.tarjeta-libro__nombre {
+  padding: 0 calc(3 * var(--u));
+  font-size: calc(9 * var(--u));
+  line-height: 1.2;
+}
+
+.estado {
+  display: block;
+  width: calc(100% - calc(8 * var(--u)));
+  margin: calc(4 * var(--u)) calc(4 * var(--u)) 0;
+  padding: calc(1 * var(--u)) calc(3 * var(--u));
+  border-radius: calc(6 * var(--u));
+  font-family: 'Inter', system-ui, sans-serif;
+  font-size: calc(7 * var(--u));
+  line-height: 1.2;
+  color: #ffffff;
+}
+
+.estado--leyendo,
+.estado--abandonado {
+  background: var(--texto);
+}
+
+.estado--terminado {
+  background: #2f4a3a;
+  color: #d9f2df;
+}

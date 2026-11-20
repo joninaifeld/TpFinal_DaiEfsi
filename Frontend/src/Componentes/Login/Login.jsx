@@ -25,10 +25,10 @@ export default function Login() {
                     <input type="text" placeholder="username" value={username} onChange={(e) => setUsername(e.target.value)} className="login_input" />
                     <input type="password" placeholder="contraseña" value={password} onChange={(e) => setPassword(e.target.value)} className="login_input" />
                     <button type="button" className="login_button" onClick={irHome}>
-                        Registrarse
+                        Iniciar Sesión
                     </button>
-                    <Link to="/recuperar_password" className="login_forgot">
-                        ¿Te olvidaste la contraseña?
+                    <Link to="/registro" className="login_registro">
+                        ¿No tenés cuenta?
                     </Link>
                 </form>
             </div>
