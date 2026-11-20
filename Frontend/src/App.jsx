@@ -10,9 +10,12 @@ import Home from "./Componentes/Home/Home.jsx";
 
 import {
   favoritosPrueba,
-  actividadPrueba,
+  actividadPrueba,      
   reseniasPrueba,
 } from "./Componentes/datosPrueba";
+
+import Biblioteca from "./Componentes/Biblioteca/Biblioteca";
+import { coleccionesPrueba } from "./Componentes/datosbiblioteca.js";
 import "./App.css";
 
 function AppContent(){
@@ -30,7 +33,9 @@ function AppContent(){
           <Route path="/registro" element={<Registro />} />
           <Route path="/home" element={<Home />} />
           <Route path="/explorar" element={<Explorar />} />
-          <Route path="/perfil" element={<p>Página de perfil</p>} />
+          <Route path="/perfil" element={<Perfil/>} />
+          <Route path="/biblioteca" element={<Biblioteca/>}
+/>
         </Routes>
       </main>
 
