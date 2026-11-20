@@ -57,4 +57,17 @@ router.get('/libros', verifyToken, async (req, res) => {
   }
 });
 
+router.get('/estadisticas', verifyToken, async (req, res) => {
+  try {
+    const stats = await svc.getUserStats(req.user.id);
+    if (!stats) {
+      return res.status(404).json({ error: 'Usuario no encontrado' });
+    }
+    return res.status(200).json(stats);
+  } catch (error) {
+    console.error("Error al obtener estadísticas:", error);
+    return res.status(500).json({ error: error.message });
+  }
+});
+
 export default router;
