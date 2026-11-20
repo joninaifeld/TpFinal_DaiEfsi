@@ -1,0 +1,183 @@
+.estadisticas {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.estadisticas__titulo {
+  font-family: "Cormorant Garamond", Georgia, serif;
+  font-size: 2.4rem;
+  font-weight: 500;
+  color: var(--text);
+  margin: 0;
+}
+
+/* Filas */
+.estadisticas__fila {
+  display: flex;
+  gap: 20px;
+  align-items: stretch;
+}
+
+/* Tarjeta base */
+.stat_card {
+  flex: 1;
+  background-color: var(--surface);
+  border-radius: 10px;
+  padding: 28px 32px;
+  box-shadow: 0 2px 8px rgba(24, 28, 32, 0.08);
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.stat_card__titulo {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 2px;
+}
+
+/* Número principal */
+.stat_numero {
+  font-family: "Cormorant Garamond", Georgia, serif;
+  font-size: 2.8rem;
+  font-weight: 600;
+  color: var(--accent);
+  line-height: 1;
+  margin: 0;
+}
+
+.stat_numero--grande {
+  font-size: 3.2rem;
+}
+
+.stat_numero--medio {
+  font-size: 2rem;
+}
+
+.stat_numero__total,
+.stat_numero__suffix {
+  font-size: inherit;
+  color: var(--muted);
+  font-weight: 400;
+}
+
+.stat_label {
+  font-size: 0.95rem;
+  color: var(--muted);
+  margin: 0;
+}
+
+/* Estados de biblioteca */
+.stat_estados {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 11px;
+}
+
+.stat_estados__fila {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 32px;
+  font-size: 1rem;
+}
+
+.stat_estados__nombre {
+  color: var(--text);
+}
+
+.stat_estados__cantidad {
+  font-weight: 600;
+  color: var(--accent);
+  min-width: 20px;
+  text-align: right;
+}
+
+/* Géneros */
+.stat_generos {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 13px;
+}
+
+.stat_generos__fila {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 0.95rem;
+}
+
+.stat_generos__nombre {
+  width: 130px;
+  flex-shrink: 0;
+  color: var(--text);
+}
+
+.stat_generos__barra_fondo {
+  flex: 1;
+  height: 8px;
+  background-color: var(--border);
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.stat_generos__barra_fill {
+  height: 100%;
+  background-color: var(--accent);
+  border-radius: 4px;
+  transition: width 0.4s ease;
+}
+
+.stat_generos__cantidad {
+  width: 20px;
+  text-align: right;
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+
+/* Separadores */
+.stat_separador {
+  height: 1px;
+  background-color: var(--border);
+  margin: 2px 0;
+}
+
+.stat_separador_v {
+  width: 1px;
+  background-color: var(--border);
+  align-self: stretch;
+  margin: 0 16px;
+}
+
+/* Valoraciones */
+.stat_valoraciones_contenido {
+  display: flex;
+  align-items: center;
+}
+
+.stat_valoraciones_principal {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.stat_valoraciones_detalle {
+  display: flex;
+  gap: 36px;
+}
+
+.stat_valoraciones_detalle > div {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
