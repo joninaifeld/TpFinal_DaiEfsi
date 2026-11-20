@@ -2,6 +2,21 @@ import ReviewService from '../services/reviewService.js';
 
 const svc = new ReviewService();
 
+router.get('/:olid/resenas', async (req, res) => {
+  const { olid } = req.params;
+  if (!olid || olid.trim() === '') {
+    return res.status(400).json({ error: 'El identificador olid es obligatorio' });
+  }
+
+  try {
+    const data = await reviewSvc.getResenasByOlid(olid.trim());
+    return res.status(200).json(data);
+  } catch (error) {
+    console.error('Error al obtener reseñas:', error);
+    return res.status(500).json({ error: error.message });
+  }
+});
+
 router.put('/:olid/resena', verifyToken, async (req, res) => {
   const { olid } = req.params;
   const { puntuacion, resena_texto, titulo, autor, cover_url, genero_principal } = req.body;
@@ -27,6 +42,20 @@ router.put('/:olid/resena', verifyToken, async (req, res) => {
     });
   } catch (error) {
     console.error('Error al guardar reseña:', error);
+    return res.status(500).json({ error: error.message });
+  }
+});
+
+router.delete('/:olid/resena', verifyToken, async (req, res) => {
+  const { olid } = req.params;
+  try {
+    const eliminada = await reviewSvc.deleteResena(req.user.id, olid.trim());
+    if (!eliminada) {
+      return res.status(404).json({ error: 'No tenés una reseña registrada para este libro' });
+    }
+    return res.status(200).json({ message: 'Reseña eliminada con éxito' });
+  } catch (error) {
+    console.error('Error al eliminar reseña:', error);
     return res.status(500).json({ error: error.message });
   }
 });

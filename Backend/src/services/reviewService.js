@@ -76,5 +76,74 @@ export default class ReviewService {
         }
     }
 
+    getResenasByOlid = async (olid) => {
+        const client = new Client(config);
+        try {
+            await client.connect();
+            const sql = `
+                SELECT 
+                    vr.id,
+                    vr.puntuacion,
+                    vr.resena_texto,
+                    vr.created_at,
+                    u.id AS usuario_id,
+                    u.username,
+                    u.avatar_url
+                FROM valoraciones_resenas vr
+                JOIN libros l ON vr.libro_id = l.id
+                JOIN usuarios u ON vr.usuario_id = u.id
+                WHERE l.openlibrary_key = $1
+                ORDER BY vr.created_at DESC;
+            `;
+            const result = await client.query(sql, [olid]);
+            await client.end();
 
+            const resenas = result.rows;
+            const total = resenas.length;
+            const promedio = total > 0
+                ? Number((resenas.reduce((acc, r) => acc + r.puntuacion, 0) / total).toFixed(2))
+                : null;
+
+            return {
+                promedio_puntuacion: promedio,
+                total_valoraciones: total,
+                resenas
+            };
+        } catch (error) {
+            await client.end();
+            throw new Error(`Error al obtener reseñas del libro: ${error.message}`);
+        }
+    }
+
+    deleteResena = async (userId, olid) => {
+        const client = new Client(config);
+        try {
+            await client.connect();
+            const sql = `
+                DELETE FROM valoraciones_resenas vr
+                USING libros l
+                WHERE vr.libro_id = l.id
+                  AND vr.usuario_id = $1
+                  AND l.openlibrary_key = $2
+                RETURNING vr.id, l.titulo;
+            `;
+            const result = await client.query(sql, [userId, olid]);
+
+            if (result.rows.length > 0) {
+                await activityService.logActivity(
+                    userId,
+                    'resena',
+                    `Eliminó su reseña de "${result.rows[0].titulo}"`,
+                    {},
+                    client
+                );
+            }
+
+            await client.end();
+            return result.rows[0] || null;
+        } catch (error) {
+            await client.end();
+            throw new Error(`Error al eliminar la reseña: ${error.message}`);
+        }
+    }
 }
