@@ -6,6 +6,8 @@ import Registro from "./Componentes/Registro/Registro.jsx";
 import Explorar from "./Componentes/Explorar/Explorar.jsx";
 import fotoPrueba from "./assets/FotoPerfilprueba.png";
 import Perfil from "./Componentes/Perfil/Perfil";
+import Home from "./Componentes/Home/Home.jsx";
+
 import {
   favoritosPrueba,
   actividadPrueba,
@@ -26,7 +28,7 @@ function AppContent(){
           <Route path="/" element={<Navigate to="/login" replace />} />
           <Route path="/login" element={<Login />} />
           <Route path="/registro" element={<Registro />} />
-          <Route path="/home" element={<p>Home</p>} />
+          <Route path="/home" element={<Home />} />
           <Route path="/explorar" element={<Explorar />} />
           <Route path="/perfil" element={<p>Página de perfil</p>} />
         </Routes>
