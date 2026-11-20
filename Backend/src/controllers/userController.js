@@ -3,10 +3,12 @@ import jwt from "jsonwebtoken"
 import verifyToken from "../middlewares/authMiddleware.js";
 import UserService from '../services/userService.js';
 import ActivityService from '../services/activityService.js';
+import ReviewService from '../services/reviewService.js';
 
 const router = Router();
 const svc = new UserService();
 const activitySvc = new ActivityService();
+const reviewSvc = new ReviewService();
 
 router.put('/perfil', verifyToken, async (req, res) => {
   try {
@@ -66,6 +68,16 @@ router.get('/estadisticas', verifyToken, async (req, res) => {
     return res.status(200).json(stats);
   } catch (error) {
     console.error("Error al obtener estadísticas:", error);
+    return res.status(500).json({ error: error.message });
+  }
+});
+
+router.get('/resenas', verifyToken, async (req, res) => {
+  try {
+    const resenas = await reviewSvc.getUserResenas(req.user.id);
+    return res.status(200).json(resenas);
+  } catch (error) {
+    console.error("Error al obtener reseñas del usuario:", error);
     return res.status(500).json({ error: error.message });
   }
 });
