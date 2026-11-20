@@ -146,4 +146,34 @@ export default class ReviewService {
             throw new Error(`Error al eliminar la reseña: ${error.message}`);
         }
     }
+
+    getUserResenas = async (userId) => {
+        const client = new Client(config);
+        try {
+            await client.connect();
+            const sql = `
+                SELECT 
+                    vr.id,
+                    vr.puntuacion,
+                    vr.resena_texto,
+                    vr.created_at,
+                    l.id AS libro_id,
+                    l.openlibrary_key,
+                    l.titulo,
+                    l.autor,
+                    l.cover_url,
+                    l.genero_principal
+                FROM valoraciones_resenas vr
+                JOIN libros l ON vr.libro_id = l.id
+                WHERE vr.usuario_id = $1
+                ORDER BY vr.created_at DESC;
+            `;
+            const result = await client.query(sql, [userId]);
+            await client.end();
+            return result.rows;
+        } catch (error) {
+            await client.end();
+            throw new Error(`Error al obtener reseñas del usuario: ${error.message}`);
+        }
+    }
 }
