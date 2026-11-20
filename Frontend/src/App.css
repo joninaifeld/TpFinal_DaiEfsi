@@ -1,6 +1,6 @@
 .main-content {
   flex: 1;
-  padding: 24px 32px;
+  padding: 1.5rem var(--padding-lateral);
 }
 
 #root {

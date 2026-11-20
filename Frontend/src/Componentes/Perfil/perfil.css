@@ -20,8 +20,7 @@
   gap: calc(42 * var(--u));
   box-sizing: border-box;
   width: 100%;
-  padding: calc(24 * var(--u)) calc(24 * var(--u)) calc(24 * var(--u)) calc(27 * var(--u));
-  background: var(--fondo);
+  background: var(--bg);
   color: var(--texto);
   font-family: 'Cormorant Garamond', Georgia, serif;
 }

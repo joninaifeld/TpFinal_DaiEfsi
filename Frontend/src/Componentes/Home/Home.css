@@ -7,8 +7,8 @@
 /* Banda superior con fondo --border, rompe el padding del main-content */
 .home__banda_superior {
   background-color: var(--border);
-  margin: -24px -32px 0 -32px;
-  padding: 32px 32px 32px 32px;
+  margin: -1.5rem calc(-1 * var(--padding-lateral)) 0 calc(-1 * var(--padding-lateral));
+  padding: 2rem var(--padding-lateral);
   display: flex;
   flex-direction: column;
   gap: 24px;
@@ -153,9 +153,9 @@
 
 /* Título de sección */
 .home__seccion_titulo {
-  font-family: "Cormorant Garamond", Georgia, serif;
-  font-size: 1.7rem;
-  font-weight: 500;
+  font-family: var(--font-serif);
+  font-size: var(--size-seccion);
+  font-weight: 400;
   margin: 0 0 20px 0;
   color: var(--text);
 }
