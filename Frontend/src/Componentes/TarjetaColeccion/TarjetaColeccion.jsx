@@ -1,4 +1,4 @@
-import { tiempoRelativo } from "../../utils/tiempoRelativo";
+import { tiempoRelativo } from "../TiempoRelativo";
 import "./TarjetaColeccion.css";
 
 /**

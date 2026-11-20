@@ -9,23 +9,22 @@ const ETIQUETAS_ESTADO = {
 
 /**
  * libro: { titulo, portada?, rating, estado? }
- * estado (opcional): "leyendo" | "terminado" | "abandonado"
  */
 function TarjetaLibro({ libro }) {
   const { titulo, portada, rating = 0, estado } = libro;
 
   return (
-    <article className="tarjeta-libro">
+    <article className="tarjeta_libro">
       <div
-        className="portada"
+        className="tarjeta_libro__portada"
         style={portada ? { backgroundImage: `url(${portada})` } : undefined}
       >
         {!portada && <span>Libro</span>}
       </div>
-      <p className="tarjeta-libro__nombre">{titulo}</p>
+      <p className="tarjeta_libro__nombre">{titulo}</p>
       <Estrellas valor={rating} />
       {estado && (
-        <span className={`estado estado--${estado}`}>
+        <span className={`tarjeta_libro__estado tarjeta_libro__estado--${estado}`}>
           {ETIQUETAS_ESTADO[estado] ?? estado}
         </span>
       )}

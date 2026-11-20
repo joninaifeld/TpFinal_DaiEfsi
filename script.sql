@@ -1,5 +1,5 @@
 --
--- PostgreSQL database dump (Actualizado)
+-- PostgreSQL database dump (Actualizado con tabla actividades)
 --
 
 SET statement_timeout = 0;
@@ -24,6 +24,7 @@ SET default_tablespace = '';
 
 SET default_table_access_method = heap;
 
+
 --
 -- Name: actividades; Type: TABLE; Schema: public; Owner: postgres
 --
@@ -31,8 +32,10 @@ SET default_table_access_method = heap;
 CREATE TABLE public.actividades (
     id integer NOT NULL,
     usuario_id integer NOT NULL,
-    tipo_actividad character varying(50) NOT NULL,
+    tipo_accion character varying(50) NOT NULL,
     descripcion text NOT NULL,
+    libro_id integer,
+    coleccion_id integer,
     created_at timestamp without time zone DEFAULT CURRENT_TIMESTAMP
 );
 
@@ -65,7 +68,7 @@ CREATE TABLE public.estado_lectura (
     id integer NOT NULL,
     usuario_id integer NOT NULL,
     libro_id integer NOT NULL,
-    estado character varying(30), -- Permite NULL para marcar favoritos sin estado
+    estado character varying(30),
     es_favorito boolean DEFAULT false,
     updated_at timestamp without time zone DEFAULT CURRENT_TIMESTAMP,
     CONSTRAINT estado_lectura_estado_check CHECK (((estado)::text = ANY ((ARRAY['Quiero leer'::character varying, 'Leyendo'::character varying, 'Leído'::character varying, 'Abandonado'::character varying])::text[])))
@@ -257,39 +260,6 @@ ALTER TABLE ONLY public.valoraciones_resenas ALTER COLUMN id SET DEFAULT nextval
 
 
 --
--- Data (Inserts)
---
-
-COPY public.actividades (id, usuario_id, tipo_actividad, descripcion, created_at) FROM stdin;
-1	1	CAMBIO_ESTADO	Marcó "Dune" como Leído	2026-10-27 10:21:18.666201
-\.
-
-COPY public.estado_lectura (id, usuario_id, libro_id, estado, es_favorito, updated_at) FROM stdin;
-1	1	1	Leído	t	2026-10-27 10:21:18.666201
-\.
-
-COPY public.coleccion_libros (coleccion_id, libro_id, added_at) FROM stdin;
-1	1	2026-10-27 10:21:18.666201
-\.
-
-COPY public.colecciones (id, usuario_id, nombre, descripcion, created_at) FROM stdin;
-1	1	Favoritos Sci-Fi	Mi lista personal de imperdibles del espacio.	2026-10-27 10:21:18.666201
-\.
-
-COPY public.libros (id, openlibrary_key, titulo, autor, cover_url, genero_principal) FROM stdin;
-1	/works/OL27448W	Dune	Frank Herbert	https://covers.openlibrary.org/b/id/12818862-L.jpg	Science Fiction
-\.
-
-COPY public.usuarios (id, username, email, password_hash, avatar_url, bio, reading_goal_annual, created_at) FROM stdin;
-1	demo_user	demo@bookly.com	$2b$10$wT3I4uX3q4z5v6w7x8y9uO0a1b2c3d4e5f6g7h8i9j0k1l2m3n4o	\N	Lector apasionado de ciencia ficción y fantasía.	12	2026-10-27 10:21:18.666201
-\.
-
-COPY public.valoraciones_resenas (id, usuario_id, libro_id, puntuacion, resena_texto, created_at) FROM stdin;
-1	1	1	5	Una obra maestra de la ciencia ficción.	2026-10-27 10:21:18.666201
-\.
-
-
---
 -- Sequences Setting
 --
 
@@ -341,13 +311,14 @@ ALTER TABLE ONLY public.usuarios
 ALTER TABLE ONLY public.valoraciones_resenas
     ADD CONSTRAINT valoraciones_resenas_pkey PRIMARY KEY (id);
 
--- Restricciones únicas y de nombres para colecciones
 ALTER TABLE ONLY public.colecciones
     ADD CONSTRAINT uq_usuario_nombre_coleccion UNIQUE (usuario_id, nombre);
 
 CREATE INDEX idx_libros_openlibrary_key ON public.libros USING btree (openlibrary_key);
 
 CREATE INDEX idx_colecciones_usuario ON public.colecciones USING btree (usuario_id);
+
+CREATE INDEX idx_actividades_usuario ON public.actividades USING btree (usuario_id);
 
 
 --
@@ -356,6 +327,12 @@ CREATE INDEX idx_colecciones_usuario ON public.colecciones USING btree (usuario_
 
 ALTER TABLE ONLY public.actividades
     ADD CONSTRAINT actividades_usuario_id_fkey FOREIGN KEY (usuario_id) REFERENCES public.usuarios(id) ON DELETE CASCADE;
+
+ALTER TABLE ONLY public.actividades
+    ADD CONSTRAINT actividades_libro_id_fkey FOREIGN KEY (libro_id) REFERENCES public.libros(id) ON DELETE SET NULL;
+
+ALTER TABLE ONLY public.actividades
+    ADD CONSTRAINT actividades_coleccion_id_fkey FOREIGN KEY (coleccion_id) REFERENCES public.colecciones(id) ON DELETE SET NULL;
 
 ALTER TABLE ONLY public.estado_lectura
     ADD CONSTRAINT estado_lectura_libro_id_fkey FOREIGN KEY (libro_id) REFERENCES public.libros(id) ON DELETE CASCADE;

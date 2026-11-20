@@ -1,5 +1,5 @@
 import { useMemo, useState } from "react";
-import BuscadorColecciones from "../BuscadorColecciones/BuscadorColecciones";
+import BuscadorColecciones from "../Buscador/BuscadorColecciones";
 import TarjetaColeccion from "../TarjetaColeccion/TarjetaColeccion";
 import "./Biblioteca.css";
 

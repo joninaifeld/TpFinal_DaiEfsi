@@ -13,7 +13,9 @@ export default class AuthService {
             await client.end();
             returnArray = (result.rows && result.rows.length > 0) ? result.rows[0] : null;
         } catch (error) {
+            await client.end();
             error.message = `Error al obtener el usuario por nombre de usuario: ${error.message}`;
+            throw error;
         }
         return returnArray;
     }
@@ -27,6 +29,7 @@ export default class AuthService {
             await client.end();
             return result.rowCount > 0;
         } catch (error) {
+            await client.end();
             error.message = `Error al verificar la existencia del usuario: ${error.message}`;
             throw error; 
         }
@@ -48,6 +51,7 @@ export default class AuthService {
             return result.rows[0];
 
         } catch (error) {
+            await client.end();
             error.message = `Error al crear el usuario: ${error.message}`;
             throw error;
         }

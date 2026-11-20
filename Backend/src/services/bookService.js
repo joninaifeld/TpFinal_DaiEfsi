@@ -1,13 +1,15 @@
 import config from '../config/dbconfig.js';
 import pkg from 'pg';
 import OpenLibraryService from './openLibraryService.js';
+import ActivityService from '../services/activityService.js';
+
 
 const { Client } = pkg;
 const olService = new OpenLibraryService();
+const activityService = new ActivityService();
 
 export default class BookService {
-    
-    async getOrCreateLibroLocal(client, olid) {
+    getOrCreateLibroLocal = async (client, olid) => {
         const findSql = `SELECT id FROM libros WHERE openlibrary_key = $1`;
         const findRes = await client.query(findSql, [olid]);
         
@@ -31,7 +33,7 @@ export default class BookService {
         return insertRes.rows[0].id;
     }
 
-    async upsertEstado(userId, olid, nuevoEstado) {
+    upsertEstado = async (userId, olid, nuevoEstado) => {
         const client = new Client(config);
         try {
             await client.connect();
@@ -49,6 +51,18 @@ export default class BookService {
             `;
             
             const result = await client.query(sql, [userId, libroId, nuevoEstado]);
+
+            const libroInfo = await client.query(`SELECT titulo FROM libros WHERE id = $1`, [libroId]);
+            const titulo = libroInfo.rows[0]?.titulo || olid;
+
+            await activityService.logActivity(
+                userId,
+                'estado',
+                `Marcó "${titulo}" como ${nuevoEstado}`,
+                { libroId },
+                client
+            );
+
             await client.end();
             return result.rows[0];
         } catch (error) {
@@ -57,7 +71,7 @@ export default class BookService {
         }
     }
 
-    async upsertFavorito(userId, olid, esFavorito) {
+    upsertFavorito = async (userId, olid, esFavorito) => {
         const client = new Client(config);
         try {
             await client.connect();
@@ -75,6 +89,19 @@ export default class BookService {
             `;
             
             const result = await client.query(sql, [userId, libroId, esFavorito]);
+
+            const libroInfo = await client.query(`SELECT titulo FROM libros WHERE id = $1`, [libroId]);
+            const titulo = libroInfo.rows[0]?.titulo || olid;
+            const accionTexto = esFavorito ? `Agregó "${titulo}" a favoritos` : `Quitó "${titulo}" de favoritos`;
+
+            await activityService.logActivity(
+                userId,
+                'favorito',
+                accionTexto,
+                { libroId },
+                client
+            );
+
             await client.end();
             return result.rows[0];
         } catch (error) {

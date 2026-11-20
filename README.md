@@ -6,6 +6,7 @@ Hacemos de libros. Originalmente elegimos hacer de videojuegos pero no hay ningu
  - Hong: santinicohong@gmail.com
  - Choe: cuenta de ort
  - Alan: cuenta de ort
+
 ## Figma: https://www.figma.com/design/0xlecZZqfylq30VLwgXrk5/Untitled?node-id=0-1&p=f&t=Vq9z2SjFyhL4f99c-0 
 ### Cuentas: 
  - Jona: naijoninab@gmail.com
