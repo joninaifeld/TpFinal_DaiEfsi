@@ -62,6 +62,9 @@ function Home() {
                 style={{ width: `${(RETO_COMPLETADO / RETO_ACTUAL) * 100}%` }}
               />
             </div>
+            <p className="home__reto_pct">
+              {Math.round((RETO_COMPLETADO / RETO_ACTUAL) * 100)}% completado
+            </p>
           </div>
 
           <div className="home__widget_leyendo">
