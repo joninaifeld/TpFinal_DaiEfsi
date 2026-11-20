@@ -78,6 +78,11 @@
   transition: width 0.4s ease;
 }
 
+.home__reto_pct {
+  font-size: 0.85rem;
+  color: var(--muted);
+}
+
 /* Widget leyendo actualmente */
 .home__widget_leyendo {
   background-color: var(--surface);

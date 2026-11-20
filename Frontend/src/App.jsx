@@ -7,6 +7,7 @@ import Explorar from "./Componentes/Explorar/Explorar.jsx";
 import fotoPrueba from "./assets/FotoPerfilprueba.png";
 import Perfil from "./Componentes/Perfil/Perfil";
 import Home from "./Componentes/Home/Home.jsx";
+import Estadisticas from "./Componentes/Estadisticas/Estadisticas.jsx";
 
 import {
   favoritosPrueba,
@@ -33,7 +34,8 @@ function AppContent(){
           <Route path="/registro" element={<Registro />} />
           <Route path="/home" element={<Home />} />
           <Route path="/explorar" element={<Explorar />} />
-          <Route path="/perfil" element={<Perfil/>} />
+          <Route path="/perfil" element={<Perfil />} />
+          <Route path="/estadisticas" element={<Estadisticas />} />
           <Route path="/biblioteca" element={<Biblioteca/>}
 />
         </Routes>
