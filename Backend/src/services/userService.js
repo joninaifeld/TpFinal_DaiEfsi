@@ -3,6 +3,31 @@ import pkg from 'pg';
 const { Client } = pkg;
 
 export default class UserService {
+    getUserById = async (userId) => {
+        const client = new Client(config);
+        try {
+            await client.connect();
+            const sql = `
+                SELECT 
+                    id,
+                    username,
+                    email,
+                    avatar_url,
+                    bio,
+                    reading_goal_annual,
+                    created_at
+                FROM "usuarios"
+                WHERE id = $1;
+            `;
+            const result = await client.query(sql, [userId]);
+            await client.end();
+            return result.rows[0] || null;
+        } catch (error) {
+            await client.end();
+            throw new Error(`Error al obtener el perfil del usuario: ${error.message}`);
+        }
+    }
+    
     updateUser = async (userId, data) => {
         const client = new Client(config);
         const { bio, avatar_url, reading_goal_annual } = data;
