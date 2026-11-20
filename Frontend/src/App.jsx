@@ -3,6 +3,7 @@ import Header from "./Componentes/Header/Header";
 import Footer from "./Componentes/Footer/Footer";
 import fotoPrueba from "./assets/FotoPerfilprueba.png";
 import Perfil from "./Componentes/Perfil/Perfil";
+
 import {
   favoritosPrueba,
   actividadPrueba,
