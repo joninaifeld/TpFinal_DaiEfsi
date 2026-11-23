@@ -190,3 +190,44 @@
   padding: calc(1 * var(--u)) 0;
   border-bottom: 1px solid var(--borde-avatar);
 }
+
+.avatar_contenedor {
+  position: relative;
+  width: calc(162 * var(--u));
+  margin-bottom: calc(-4 * var(--u));
+}
+
+.avatar__editar {
+  position: absolute;
+  bottom: calc(4 * var(--u));
+  right: calc(4 * var(--u));
+  width: calc(24 * var(--u));
+  height: calc(24 * var(--u));
+  border-radius: 50%;
+  background: var(--blanco);
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  border: 0;
+  cursor: pointer;
+  color: var(--texto);
+}
+
+.avatar_editar {
+  width: calc(162 * var(--u));
+  margin-bottom: calc(-4 * var(--u));
+  display: flex;
+  flex-direction: column;
+  gap: calc(3 * var(--u));
+}
+
+.avatar_input {
+  width: 100%;
+  padding: calc(2 * var(--u)) calc(3 * var(--u));
+  border: 1px solid var(--borde-avatar);
+  border-radius: calc(4 * var(--u));
+  font-family: inherit;
+  font-size: calc(8 * var(--u));
+}
