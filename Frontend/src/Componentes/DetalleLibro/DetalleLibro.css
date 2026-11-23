@@ -1,0 +1,163 @@
+/* Fuentes del diseño: Cormorant Garamond (títulos) e Inter (textos chicos).
+   En index.html:
+   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet"> */
+
+.detalle {
+  --fondo: #f8f6f1;
+  --blanco: #ffffff;
+  --borde: #e8e4da;
+  --texto: #1a1d21;
+  --texto-suave: #6b6558;
+  --portada: #ff3b3b;
+  --sombra: 0 calc(2 * var(--u)) calc(5 * var(--u)) rgba(0, 0, 0, 0.22);
+  /* 1 unidad = 1px del Figma (≈710px de ancho); escala con la pantalla */
+  /* Espacio que ocupan Header + Footer (ajustalo si cambian de alto) */
+  --reservado: 340px;
+  --u: clamp(1px, min(calc(100vw / 710), calc((100vh - var(--reservado)) / 288)), 2.4px);
+
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  gap: calc(71 * var(--u));
+  box-sizing: border-box;
+  width: 100%;
+  min-height: calc(100vh - var(--reservado));
+  padding: calc(32 * var(--u)) calc(20 * var(--u)) calc(32 * var(--u));
+  background: var(--fondo);
+  color: var(--texto);
+  font-family: 'Cormorant Garamond', Georgia, serif;
+}
+
+.detalle *,
+.detalle *::before,
+.detalle *::after {
+  box-sizing: border-box;
+}
+
+.detalle p,
+.detalle h1 {
+  margin: 0;
+}
+
+/* ---------- Portada + puntuación ---------- */
+.detalle__portada-col {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-top: calc(40 * var(--u));
+}
+
+.detalle__portada {
+  display: flex;
+  align-items: flex-end;
+  width: calc(97 * var(--u));
+  height: calc(136 * var(--u));
+  padding: 0 calc(11 * var(--u)) calc(24 * var(--u));
+  border-radius: calc(5 * var(--u));
+  background-color: var(--portada);
+  background-size: cover;
+  background-position: center;
+  box-shadow: var(--sombra);
+  font-size: calc(20 * var(--u));
+  line-height: 1;
+}
+
+.detalle__puntuacion {
+  display: flex;
+  align-items: center;
+  gap: calc(2 * var(--u));
+  margin-top: calc(6 * var(--u));
+  font-family: 'Inter', system-ui, sans-serif;
+  font-size: calc(7 * var(--u));
+  line-height: 1;
+}
+
+.detalle__estrella {
+  color: #f5b301;
+  font-size: calc(9 * var(--u));
+}
+
+.detalle__nota {
+  font-weight: 600;
+}
+
+.detalle__votos {
+  color: var(--texto-suave);
+}
+
+/* ---------- Tarjeta de datos ---------- */
+.detalle__tarjeta {
+  position: relative;
+  width: calc(216 * var(--u));
+  min-height: calc(224 * var(--u));
+  padding: calc(15 * var(--u)) calc(20 * var(--u)) calc(15 * var(--u)) calc(28 * var(--u));
+  border: calc(2 * var(--u)) solid var(--borde);
+  border-radius: calc(8 * var(--u));
+  background: var(--blanco);
+}
+
+.detalle__guardar {
+  position: absolute;
+  top: calc(6 * var(--u));
+  right: calc(9 * var(--u));
+  display: flex;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: #c9c5bb;
+  cursor: pointer;
+}
+
+.detalle__guardar svg {
+  width: calc(13 * var(--u));
+  height: calc(13 * var(--u));
+}
+
+.detalle__guardar--activo {
+  color: #c9a24b;
+}
+
+.detalle__titulo {
+  font-size: calc(24 * var(--u));
+  font-weight: 500;
+  line-height: 1.1;
+}
+
+.detalle__campos {
+  display: grid;
+  grid-template-columns: calc(74 * var(--u)) 1fr;
+  gap: calc(4 * var(--u)) 0;
+  margin-top: calc(3 * var(--u));
+}
+
+.detalle__descripcion-label {
+  margin: calc(4 * var(--u)) 0 calc(1 * var(--u)) calc(5 * var(--u));
+  font-size: calc(5.5 * var(--u));
+  line-height: 1.2;
+  color: var(--texto-suave);
+}
+
+.detalle__descripcion {
+  height: calc(98 * var(--u));
+  padding: calc(4 * var(--u)) calc(5 * var(--u));
+  overflow-y: auto;
+  border: calc(1 * var(--u)) solid var(--borde);
+  border-radius: calc(6 * var(--u));
+  background: var(--blanco);
+  font-family: 'Inter', system-ui, sans-serif;
+  font-size: calc(5.5 * var(--u));
+  line-height: 1.4;
+  scrollbar-width: thin;
+}
+
+@media (max-width: 720px) {
+  .detalle {
+    flex-direction: column;
+    align-items: center;
+    gap: calc(24 * var(--u));
+  }
+
+  .detalle__portada-col {
+    padding-top: 0;
+  }
+}

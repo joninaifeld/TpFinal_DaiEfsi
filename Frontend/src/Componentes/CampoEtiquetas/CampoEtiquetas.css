@@ -1,0 +1,24 @@
+.campo-etiquetas__label {
+  display: block;
+  font-size: calc(5.5 * var(--u));
+  line-height: 1.2;
+  color: var(--texto-suave, #6b6558);
+}
+
+.campo-etiquetas__lista {
+  display: flex;
+  flex-wrap: wrap;
+  gap: calc(3 * var(--u));
+  margin-top: calc(1 * var(--u));
+}
+
+.campo-etiquetas__chip {
+  padding: calc(1 * var(--u)) calc(6 * var(--u));
+  border-radius: calc(5 * var(--u));
+  background: var(--borde, #e8e4da);
+  font-family: 'Inter', system-ui, sans-serif;
+  font-size: calc(5 * var(--u));
+  line-height: 1.5;
+  color: var(--texto, #1a1d21);
+  white-space: nowrap;
+}

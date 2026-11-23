@@ -14,13 +14,19 @@ function TarjetaLibro({ libro }) {
   const { titulo, portada, rating = 0, estado } = libro;
 
   return (
-    <article className="tarjeta_libro">
-      <div
-        className="tarjeta_libro__portada"
-        style={portada ? { backgroundImage: `url(${portada})` } : undefined}
-      >
-        {!portada && <span>Libro</span>}
-      </div>
+      <article
+      className={clickeable ? "tarjeta-libro tarjeta-libro--clickeable" : "tarjeta-libro"}
+      role={clickeable ? "button" : undefined}
+      tabIndex={clickeable ? 0 : undefined}
+      onClick={clickeable ? () => onVer(libro) : undefined}
+      onKeyDown={
+        clickeable
+          ? (e) => {
+              if (e.key === "Enter" || e.key === " ") onVer(libro);
+            }
+          : undefined
+      }
+    >
       <p className="tarjeta_libro__nombre">{titulo}</p>
       <Estrellas valor={rating} />
       {estado && (

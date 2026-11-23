@@ -2,8 +2,10 @@ import "./perfil.css";
 import fotoPerfil from "../../assets/FotoPerfilPrueba.png";
 import TarjetaLibro from "../TarjetaLibro/TarjetaLibro";
 import Resenia from "../Resenia/Resenia";
+import { useNavigate } from "react-router-dom"; 
 
 function Perfil({
+  
   nombreCompleto = "nombre completo",
   biografia = "biografía",
   generoPreferido = "genero preferido:",
@@ -12,7 +14,12 @@ function Perfil({
   actividad = [],
   resenias = [],
   onEditarBiografia,
-}) {
+})
+
+{
+
+  const verLibro = (libro) => navigate(`/libro/${libro.id}`);
+
   return (
     <main className="perfil">
       <aside className="perfil__lateral">
@@ -42,18 +49,18 @@ function Perfil({
         <section className="seccion">
           <h2 className="seccion__titulo">Favoritos</h2>
           <div className="seccion__fila">
-            {favoritos.map((libro) => (
-              <TarjetaLibro key={libro.id} libro={libro} />
-            ))}
+              {favoritos.map((libro) => (
+      <TarjetaLibro key={libro.id} libro={libro} onVer={verLibro} />
+    ))}
           </div>
         </section>
 
         <section className="seccion">
           <h2 className="seccion__titulo">Actividad</h2>
           <div className="seccion__fila">
-            {actividad.map((libro) => (
-              <TarjetaLibro key={libro.id} libro={libro} />
-            ))}
+        {actividad.map((libro) => (
+      <TarjetaLibro key={libro.id} libro={libro} onVer={verLibro} />
+    ))}
           </div>
         </section>
 

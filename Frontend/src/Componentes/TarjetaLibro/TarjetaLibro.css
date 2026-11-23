@@ -51,3 +51,15 @@
   background-color: #2f4a3a;
   color: #d9f2df;
 }
+.tarjeta-libro--clickeable {
+  cursor: pointer;
+  transition: transform 0.15s ease;
+}
+
+.tarjeta-libro--clickeable:hover {
+  transform: translateY(calc(-2 * var(--u)));
+}
+
+.tarjeta-libro--clickeable:focus-visible {
+  outline: calc(2 * var(--u)) solid #c9a24b;
+}
