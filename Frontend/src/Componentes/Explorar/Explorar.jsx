@@ -1,71 +1,32 @@
 import { useState } from "react";
-import Estrellas from "../Estrellas/Estrellas";
+import { buscarLibros, setEstado, setFavorito } from "../../services/bookService.js";
 import BotonFavorito from "../BotonFavorito/BotonFavorito";
 import BotonAgregar from "../BotonAgregar/BotonAgregar";
 import "./Explorar.css";
 
-const GENEROS = ["Ficción", "Fantasía", "Misterio", "Historia"];
-const IDIOMAS = ["Español", "Inglés"];
-const RATINGS = [4.2, 4.5, 4.8, 4.0, 4.7];
-
 const ORDENES = [
   { valor: "relevancia", texto: "Ordenar por relevancia" },
-  { valor: "calificacion", texto: "Mejor calificados" },
   { valor: "titulo", texto: "Título (A-Z)" },
 ];
 
 const POR_PAGINA = 8;
 
-const LIBROS_PRUEBA = [];
-let posGenero = 0;
-let posIdioma = 0;
-let posRating = 0;
-
-for (let i = 1; i <= 40; i++) {
-  LIBROS_PRUEBA.push({
-    id: i,
-    titulo: `Nombre libro ${i}`,
-    autor: "Autor/a",
-    portada: "",
-    genero: GENEROS[posGenero],
-    idioma: IDIOMAS[posIdioma],
-    rating: RATINGS[posRating],
-    votos: 100 + i * 10,
-  });
-
-  posGenero++;
-  if (posGenero === GENEROS.length) posGenero = 0;
-
-  posIdioma++;
-  if (posIdioma === IDIOMAS.length) posIdioma = 0;
-
-  posRating++;
-  if (posRating === RATINGS.length) posRating = 0;
-}
-
 function TarjetaExplorar({ libro, onAgregar, onAgregado, onFavorito }) {
-  const { titulo, autor, portada, rating = 0, votos = 0, genero } = libro;
+  const { titulo, autor, cover_url, genero_principal } = libro;
 
   return (
     <article className="explorar-card">
       <div
         className="explorar-card__portada"
-        style={portada ? { backgroundImage: `url(${portada})` } : undefined}
+        style={cover_url ? { backgroundImage: `url(${cover_url})` } : undefined}
       >
-        {!portada && <span>Libro</span>}
+        {!cover_url && <span>Libro</span>}
       </div>
 
       <div className="explorar-card__info">
-        {genero && <span className="explorar-card__genero">{genero}</span>}
+        {genero_principal && <span className="explorar-card__genero">{genero_principal}</span>}
         <h3 className="explorar-card__titulo">{titulo}</h3>
-        <p className="explorar-card__autor">{autor}</p>
-
-        <div className="explorar-card__rating">
-          <Estrellas valor={rating} />
-          <span className="explorar-card__votos">
-            {rating} ({votos})
-          </span>
-        </div>
+        {autor && <p className="explorar-card__autor">{autor}</p>}
 
         <div className="explorar-card__acciones">
           <BotonAgregar onAgregar={onAgregar} onAgregado={onAgregado} />
@@ -78,66 +39,59 @@ function TarjetaExplorar({ libro, onAgregar, onAgregado, onFavorito }) {
 
 function Explorar() {
   const [texto, setTexto] = useState("");
-  const [busqueda, setBusqueda] = useState("");
-  const [genero, setGenero] = useState("");
-  const [idioma, setIdioma] = useState("");
+  const [libros, setLibros] = useState([]);
+  const [total, setTotal] = useState(0);
   const [orden, setOrden] = useState("relevancia");
   const [pagina, setPagina] = useState(1);
+  const [buscando, setBuscando] = useState(false);
+  const [buscado, setBuscado] = useState(false);
+  const [error, setError] = useState('');
   const [agregados, setAgregados] = useState([]);
 
-  const textoBuscado = busqueda.trim().toLowerCase();
-
-  const resultados = LIBROS_PRUEBA.filter((libro) => {
-    const yaAgregado = agregados.includes(libro.id);
-    const coincideTexto =
-      textoBuscado === "" ||
-      libro.titulo.toLowerCase().includes(textoBuscado) ||
-      libro.autor.toLowerCase().includes(textoBuscado);
-    const coincideGenero = genero === "" || libro.genero === genero;
-    const coincideIdioma = idioma === "" || libro.idioma === idioma;
-
-    return !yaAgregado && coincideTexto && coincideGenero && coincideIdioma;
-  });
-
-  if (orden === "calificacion") {
-    resultados.sort((a, b) => b.rating - a.rating);
-  } else if (orden === "titulo") {
-    resultados.sort((a, b) => a.titulo.localeCompare(b.titulo));
-  }
-
-  // 3. Calculamos la paginación
-  const totalPaginas = Math.max(1, Math.ceil(resultados.length / POR_PAGINA));
-  const paginaActual = Math.min(pagina, totalPaginas);
-  const inicio = (paginaActual - 1) * POR_PAGINA;
-  const librosPagina = resultados.slice(inicio, inicio + POR_PAGINA);
-
-  const paginas = [];
-  for (let i = 1; i <= totalPaginas; i++) {
-    paginas.push(i);
-  }
-
-  const buscar = (e) => {
+  const buscar = async (e) => {
     e.preventDefault();
-    setBusqueda(texto);
-    setPagina(1);
-  };
-
-  const elegirGenero = (nuevoGenero) => {
-    setGenero(nuevoGenero);
-    setPagina(1);
+    if (!texto.trim()) return;
+    setError('');
+    setBuscando(true);
+    try {
+      const data = await buscarLibros(texto.trim(), 1);
+      setLibros(data.resultados ?? []);
+      setTotal(data.total ?? 0);
+      setPagina(1);
+      setBuscado(true);
+    } catch {
+      setError('No se pudo realizar la búsqueda. Intentá de nuevo.');
+    } finally {
+      setBuscando(false);
+    }
   };
 
   const agregarABiblioteca = async (libro) => {
-    console.log("Agregado a biblioteca:", libro.id);
+    try {
+      await setEstado(libro.openlibrary_key, 'Quiero leer');
+    } catch {}
   };
 
   const quitarDeResultados = (libro) => {
-    setAgregados([...agregados, libro.id]);
+    setAgregados((prev) => [...prev, libro.openlibrary_key]);
   };
 
-  const toggleFavorito = (libro, esFavorito) => {
-    console.log("Favorito:", libro.id, esFavorito);
+  const toggleFavorito = async (libro, esFavorito) => {
+    try {
+      await setFavorito(libro.openlibrary_key, esFavorito);
+    } catch {}
   };
+
+  const visibles = libros.filter((l) => !agregados.includes(l.openlibrary_key));
+
+  const ordenados = orden === "titulo"
+    ? [...visibles].sort((a, b) => a.titulo.localeCompare(b.titulo))
+    : visibles;
+
+  const totalPaginas = Math.max(1, Math.ceil(ordenados.length / POR_PAGINA));
+  const paginaActual = Math.min(pagina, totalPaginas);
+  const inicio = (paginaActual - 1) * POR_PAGINA;
+  const librosPagina = ordenados.slice(inicio, inicio + POR_PAGINA);
 
   return (
     <section className="explorar">
@@ -162,107 +116,51 @@ function Explorar() {
             aria-label="Buscar libros por título o autor"
           />
         </div>
-        <button type="submit" className="explorar__btn-buscar">
-          Buscar
+        <button type="submit" className="explorar__btn-buscar" disabled={buscando}>
+          {buscando ? 'Buscando...' : 'Buscar'}
         </button>
       </form>
 
       <div className="explorar__filtros">
         <div className="explorar__selects">
           <select
-            className="explorar__select"
-            value={genero}
-            onChange={(e) => {
-              setGenero(e.target.value);
-              setPagina(1);
-            }}
-            aria-label="Filtrar por género"
-          >
-            <option value="">Género</option>
-            {GENEROS.map((g) => (
-              <option key={g} value={g}>
-                {g}
-              </option>
-            ))}
-          </select>
-
-          <select
-            className="explorar__select"
-            value={idioma}
-            onChange={(e) => {
-              setIdioma(e.target.value);
-              setPagina(1);
-            }}
-            aria-label="Filtrar por idioma"
-          >
-            <option value="">Idioma</option>
-            {IDIOMAS.map((i) => (
-              <option key={i} value={i}>
-                {i}
-              </option>
-            ))}
-          </select>
-
-          <select
             className="explorar__select explorar__select--orden"
             value={orden}
-            onChange={(e) => {
-              setOrden(e.target.value);
-              setPagina(1);
-            }}
+            onChange={(e) => { setOrden(e.target.value); setPagina(1); }}
             aria-label="Ordenar resultados"
           >
             {ORDENES.map((o) => (
-              <option key={o.valor} value={o.valor}>
-                {o.texto}
-              </option>
+              <option key={o.valor} value={o.valor}>{o.texto}</option>
             ))}
           </select>
         </div>
 
-        <p className="explorar__estado">
-          {busqueda
-            ? `Mostrando resultados para “${busqueda}”`
-            : "Mostrando resultados para tu búsqueda"}
-        </p>
+        {buscado && (
+          <p className="explorar__estado">
+            {total} resultados para "{texto}"
+          </p>
+        )}
       </div>
 
-      <div className="explorar__chips" role="group" aria-label="Categorías">
-        <button
-          type="button"
-          className={`explorar__chip ${genero === "" ? "explorar__chip--activo" : ""}`}
-          onClick={() => elegirGenero("")}
-        >
-          Todos
-        </button>
-        {GENEROS.map((g) => (
-          <button
-            key={g}
-            type="button"
-            className={`explorar__chip ${genero === g ? "explorar__chip--activo" : ""}`}
-            onClick={() => elegirGenero(g)}
-          >
-            {g}
-          </button>
-        ))}
-      </div>
+      {error && <p className="explorar__error">{error}</p>}
 
-      <h2 className="explorar__subtitulo-seccion">Resultados para explorar</h2>
+      {buscado && (
+        <h2 className="explorar__subtitulo-seccion">Resultados</h2>
+      )}
 
-      {librosPagina.length === 0 ? (
+      {librosPagina.length === 0 && buscado ? (
         <p className="explorar__vacio">
-          No encontramos libros con esos filtros. Probá con otra búsqueda o
-          quitá algún filtro.
+          No encontramos libros con esa búsqueda. Probá con otro término.
         </p>
       ) : (
         <div className="explorar__grilla">
           {librosPagina.map((libro) => (
             <TarjetaExplorar
-              key={libro.id}
+              key={libro.openlibrary_key}
               libro={libro}
               onAgregar={() => agregarABiblioteca(libro)}
               onAgregado={() => quitarDeResultados(libro)}
-              onFavorito={(valor) => toggleFavorito(libro, valor)}
+              onFavorito={(val) => toggleFavorito(libro, val)}
             />
           ))}
         </div>
@@ -280,7 +178,7 @@ function Explorar() {
             &lt;
           </button>
 
-          {paginas.map((num) => (
+          {Array.from({ length: totalPaginas }, (_, i) => i + 1).map((num) => (
             <button
               key={num}
               type="button"

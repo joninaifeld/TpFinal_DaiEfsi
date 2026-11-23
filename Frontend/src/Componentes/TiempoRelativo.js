@@ -1,4 +1,3 @@
-// Convierte una fecha (ISO string, timestamp o Date) en "hace 2 días", etc.
 export function tiempoRelativo(fecha) {
   if (!fecha) return "";
   const ms = Date.now() - new Date(fecha).getTime();

@@ -1,75 +1,145 @@
+import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { getPerfil, getLibros, getActividad, getResenas, updatePerfil } from "../../services/userService.js";
 import "./perfil.css";
-import fotoPerfil from "../../assets/FotoPerfilPrueba.png";
 import TarjetaLibro from "../TarjetaLibro/TarjetaLibro";
 import Resenia from "../Resenia/Resenia";
-import { useNavigate } from "react-router-dom"; 
 
-function Perfil({
-  
-  nombreCompleto = "nombre completo",
-  biografia = "biografía",
-  generoPreferido = "genero preferido:",
-  foto = fotoPerfil,
-  favoritos = [],
-  actividad = [],
-  resenias = [],
-  onEditarBiografia,
-})
+function Perfil() {
+  const navigate = useNavigate();
+  const [perfil, setPerfil] = useState(null);
+  const [favoritos, setFavoritos] = useState([]);
+  const [actividad, setActividad] = useState([]);
+  const [resenias, setResenias] = useState([]);
+  const [cargando, setCargando] = useState(true);
+  const [editandoBio, setEditandoBio] = useState(false);
+  const [bioInput, setBioInput] = useState('');
+  const [errorBio, setErrorBio] = useState('');
 
-{
+  useEffect(() => {
+    async function cargar() {
+      const [perfilRes, favRes, actRes, resenasRes] = await Promise.allSettled([
+        getPerfil(),
+        getLibros({ favoritos: 'true' }),
+        getActividad(10),
+        getResenas(),
+      ]);
+      if (perfilRes.status === 'fulfilled') {
+        setPerfil(perfilRes.value);
+        setBioInput(perfilRes.value.bio ?? '');
+      }
+      if (favRes.status === 'fulfilled') setFavoritos(favRes.value);
+      if (actRes.status === 'fulfilled') setActividad(actRes.value);
+      if (resenasRes.status === 'fulfilled') setResenias(resenasRes.value);
+      setCargando(false);
+    }
+    cargar();
+  }, []);
 
-  const verLibro = (libro) => navigate(`/libro/${libro.id}`);
+  const guardarBio = async () => {
+    setErrorBio('');
+    try {
+      const res = await updatePerfil({ biografia: bioInput });
+      setPerfil((prev) => ({ ...prev, bio: res.user?.bio ?? bioInput }));
+      setEditandoBio(false);
+    } catch (err) {
+      setErrorBio(err.response?.data?.error || 'Error al guardar.');
+    }
+  };
+
+  if (cargando) return <main className="perfil"><p>Cargando perfil...</p></main>;
+  if (!perfil) return null;
 
   return (
     <main className="perfil">
       <aside className="perfil__lateral">
-        <img className="avatar" src={foto} alt="Foto de perfil" />
+        {perfil.avatar_url ? (
+          <img className="avatar" src={perfil.avatar_url} alt="Foto de perfil" />
+        ) : (
+          <div className="avatar avatar--placeholder">
+            {perfil.username?.charAt(0).toUpperCase()}
+          </div>
+        )}
 
-        <div className="campo campo--nombre">{nombreCompleto}</div>
+        <div className="campo campo--nombre">{perfil.username}</div>
 
         <div className="campo campo--bio">
-          <span>{biografia}</span>
-          <button
-            type="button"
-            className="campo__editar"
-            aria-label="Editar biografía"
-            onClick={onEditarBiografia}
-          >
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
-              <path d="M11 4H5a2 2 0 0 0-2 2v13a2 2 0 0 0 2 2h13a2 2 0 0 0 2-2v-6" />
-              <path d="M18.5 2.5a2.1 2.1 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z" />
-            </svg>
-          </button>
+          {editandoBio ? (
+            <>
+              <textarea
+                className="campo__bio_input"
+                value={bioInput}
+                onChange={(e) => setBioInput(e.target.value)}
+                rows={3}
+              />
+              {errorBio && <p className="campo__error">{errorBio}</p>}
+              <button type="button" className="campo__guardar" onClick={guardarBio}>Guardar</button>
+              <button type="button" className="campo__cancelar" onClick={() => setEditandoBio(false)}>Cancelar</button>
+            </>
+          ) : (
+            <>
+              <span>{perfil.bio || 'Sin biografía.'}</span>
+              <button
+                type="button"
+                className="campo__editar"
+                aria-label="Editar biografía"
+                onClick={() => setEditandoBio(true)}
+              >
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M11 4H5a2 2 0 0 0-2 2v13a2 2 0 0 0 2 2h13a2 2 0 0 0 2-2v-6" />
+                  <path d="M18.5 2.5a2.1 2.1 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z" />
+                </svg>
+              </button>
+            </>
+          )}
         </div>
 
-        <div className="campo campo--genero">{generoPreferido}</div>
+        <div className="campo campo--genero">
+          Objetivo anual: {perfil.reading_goal_annual || 0} libros
+        </div>
       </aside>
 
       <div className="perfil__contenido">
         <section className="seccion">
           <h2 className="seccion__titulo">Favoritos</h2>
           <div className="seccion__fila">
-              {favoritos.map((libro) => (
-      <TarjetaLibro key={libro.id} libro={libro} onVer={verLibro} />
-    ))}
+            {favoritos.length === 0
+              ? <p>No tenés favoritos todavía.</p>
+              : favoritos.map((libro) => (
+                <TarjetaLibro
+                  key={libro.id ?? libro.openlibrary_key}
+                  libro={{ titulo: libro.titulo, portada: libro.cover_url, rating: libro.puntuacion ?? 0 }}
+                  onVer={() => navigate(`/libro/${libro.openlibrary_key}`)}
+                />
+              ))
+            }
           </div>
         </section>
 
         <section className="seccion">
           <h2 className="seccion__titulo">Actividad</h2>
           <div className="seccion__fila">
-        {actividad.map((libro) => (
-      <TarjetaLibro key={libro.id} libro={libro} onVer={verLibro} />
-    ))}
+            {actividad.length === 0
+              ? <p>Sin actividad reciente.</p>
+              : actividad.map((item) => (
+                <p key={item.id} className="perfil__actividad_item">{item.descripcion}</p>
+              ))
+            }
           </div>
         </section>
 
         <section className="seccion seccion--resenias">
           <h2 className="seccion__titulo">Reseñas</h2>
           <div className="seccion__fila">
-            {resenias.map((r) => (
-              <Resenia key={r.id} resenia={r} />
-            ))}
+            {resenias.length === 0
+              ? <p>No escribiste reseñas todavía.</p>
+              : resenias.map((r) => (
+                <Resenia
+                  key={r.id}
+                  resenia={{ libro: r.titulo, rating: r.puntuacion, texto: r.resena_texto }}
+                />
+              ))
+            }
           </div>
         </section>
       </div>

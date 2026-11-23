@@ -1,45 +1,33 @@
-import Estrellas from "../Estrellas/Estrellas";
 import BotonFavorito from "../BotonFavorito/BotonFavorito";
 import "./ColeccionLibroCard.css";
 
-const ETIQUETAS_ESTADO = {
-  quiero_leer: "Quiero leer",
-  leyendo: "Leyendo",
-  leido: "Leído",
-  abandonado: "Abandonado",
-};
-
-function ColeccionLibroCard({ libro, onFavorito }) {
-  const { titulo, autor, portada, rating = 0, votos = 0, genero, estado, favorito = false } = libro;
+function ColeccionLibroCard({ libro, onFavorito, onQuitar }) {
+  const { titulo, autor, cover_url, genero_principal, estado, es_favorito = false } = libro;
 
   return (
     <article className="coleccion_libro_card">
       <div
         className="coleccion_libro_card__portada"
-        style={portada ? { backgroundImage: `url(${portada})` } : undefined}
+        style={cover_url ? { backgroundImage: `url(${cover_url})` } : undefined}
       >
-        {!portada && <span>Libro</span>}
+        {!cover_url && <span>Libro</span>}
       </div>
 
       <div className="coleccion_libro_card__info">
-        {genero && <span className="coleccion_libro_card__genero">{genero}</span>}
+        {genero_principal && <span className="coleccion_libro_card__genero">{genero_principal}</span>}
         <h3 className="coleccion_libro_card__titulo">{titulo}</h3>
         <p className="coleccion_libro_card__autor">{autor}</p>
 
-        <div className="coleccion_libro_card__rating">
-          <Estrellas valor={rating} />
-          <span className="coleccion_libro_card__votos">
-            {rating} ({votos})
-          </span>
-        </div>
-
         <div className="coleccion_libro_card__acciones">
           {estado && (
-            <span className={`coleccion_libro_card__estado coleccion_libro_card__estado--${estado}`}>
-              {ETIQUETAS_ESTADO[estado] ?? estado}
-            </span>
+            <span className="coleccion_libro_card__estado">{estado}</span>
           )}
-          <BotonFavorito inicial={favorito} onChange={onFavorito} />
+          <BotonFavorito inicial={es_favorito} onChange={onFavorito} />
+          {onQuitar && (
+            <button type="button" className="coleccion_libro_card__quitar" onClick={onQuitar}>
+              Quitar
+            </button>
+          )}
         </div>
       </div>
     </article>

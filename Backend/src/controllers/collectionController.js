@@ -123,7 +123,7 @@ router.put("/:id", verifyToken, async (req, res) => {
   const coleccionId = req.params.id;
   const { nombre, descripcion } = req.body;
 
-  if (nombre !== undefined && !validaString(nombre)) {
+  if (nombre !== undefined && !validateString(nombre)) {
     return res.status(400).json({ error: "El nombre de la colección no puede estar vacío" });
   }
 

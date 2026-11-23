@@ -1,39 +1,22 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
+import { getColeccion, quitarLibro, actualizarColeccion } from "../../services/collectionService.js";
 import ColeccionLibroCard from "../ColeccionLibroCard/ColeccionLibroCard";
-import libroPlaceholder from "../../assets/LibroPlaceholder.png";
+import { setFavorito } from "../../services/bookService.js";
 import "./Coleccion.css";
 
 const ESTADOS_FILTRO = [
   { valor: "todos", texto: "Todos" },
-  { valor: "quiero_leer", texto: "Quiero leer" },
-  { valor: "leyendo", texto: "Leyendo" },
-  { valor: "leido", texto: "Leído" },
-  { valor: "abandonado", texto: "Abandonado" },
+  { valor: "Quiero leer", texto: "Quiero leer" },
+  { valor: "Leyendo", texto: "Leyendo" },
+  { valor: "Leído", texto: "Leído" },
+  { valor: "Abandonado", texto: "Abandonado" },
 ];
 
 const ORDENES = [
   { valor: "ninguno", texto: "Ordenar por..." },
   { valor: "titulo", texto: "Título (A-Z)" },
-  { valor: "rating", texto: "Mejor calificados" },
 ];
-
-const LOREM =
-  "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.";
-
-const COLECCION = {
-  nombre: "PLACEHOLDER",
-  descripcion: LOREM,
-  libros: [
-    { id: 1,  titulo: "PLACEHOLDER", autor: "PLACEHOLDER", portada: libroPlaceholder, rating: 4.2, votos: 120, genero: "Ficción",   estado: "leido",       favorito: false },
-    { id: 2,  titulo: "PLACEHOLDER", autor: "PLACEHOLDER", portada: libroPlaceholder, rating: 4.5, votos: 98,  genero: "Fantasía",  estado: "leyendo",     favorito: true  },
-    { id: 3,  titulo: "PLACEHOLDER", autor: "PLACEHOLDER", portada: libroPlaceholder, rating: 3.8, votos: 60,  genero: "Misterio",  estado: "quiero_leer", favorito: false },
-    { id: 4,  titulo: "PLACEHOLDER", autor: "PLACEHOLDER", portada: libroPlaceholder, rating: 4.0, votos: 75,  genero: "Historia",  estado: "leido",       favorito: true  },
-    { id: 5,  titulo: "PLACEHOLDER", autor: "PLACEHOLDER", portada: libroPlaceholder, rating: 4.7, votos: 200, genero: "Ficción",   estado: "abandonado",  favorito: false },
-    { id: 6,  titulo: "PLACEHOLDER", autor: "PLACEHOLDER", portada: libroPlaceholder, rating: 4.1, votos: 55,  genero: "Fantasía",  estado: "leido",       favorito: false },
-    { id: 7,  titulo: "PLACEHOLDER", autor: "PLACEHOLDER", portada: libroPlaceholder, rating: 3.5, votos: 40,  genero: "Misterio",  estado: "quiero_leer", favorito: true  },
-    { id: 8,  titulo: "PLACEHOLDER", autor: "PLACEHOLDER", portada: libroPlaceholder, rating: 4.9, votos: 310, genero: "Ficción",   estado: "leido",       favorito: true  },
-  ],
-};
 
 function IconoLapiz() {
   return (
@@ -45,38 +28,101 @@ function IconoLapiz() {
 }
 
 function Coleccion() {
+  const { id } = useParams();
+  const [coleccion, setColeccion] = useState(null);
+  const [cargando, setCargando] = useState(true);
+  const [error, setError] = useState('');
   const [filtroEstado, setFiltroEstado] = useState("todos");
   const [soloFavoritos, setSoloFavoritos] = useState(false);
   const [orden, setOrden] = useState("ninguno");
+  const [editandoNombre, setEditandoNombre] = useState(false);
+  const [nombreInput, setNombreInput] = useState('');
 
-  const librosFiltrados = COLECCION.libros.filter((libro) => {
+  useEffect(() => {
+    if (!id) return;
+    getColeccion(id)
+      .then((data) => {
+        setColeccion(data);
+        setNombreInput(data.nombre);
+      })
+      .catch(() => setError('No se pudo cargar la colección.'))
+      .finally(() => setCargando(false));
+  }, [id]);
+
+  const guardarNombre = async () => {
+    if (!nombreInput.trim()) return;
+    try {
+      const res = await actualizarColeccion(id, { nombre: nombreInput.trim() });
+      setColeccion((prev) => ({ ...prev, nombre: res.coleccion?.nombre ?? nombreInput.trim() }));
+      setEditandoNombre(false);
+    } catch {}
+  };
+
+  const handleFavorito = async (libro, val) => {
+    try {
+      await setFavorito(libro.openlibrary_key, val);
+      setColeccion((prev) => ({
+        ...prev,
+        libros: prev.libros.map((l) =>
+          l.openlibrary_key === libro.openlibrary_key ? { ...l, es_favorito: val } : l
+        ),
+      }));
+    } catch {}
+  };
+
+  const handleQuitar = async (libro) => {
+    try {
+      await quitarLibro(id, libro.openlibrary_key);
+      setColeccion((prev) => ({
+        ...prev,
+        libros: prev.libros.filter((l) => l.openlibrary_key !== libro.openlibrary_key),
+      }));
+    } catch {}
+  };
+
+  if (cargando) return <div className="coleccion"><p>Cargando...</p></div>;
+  if (error) return <div className="coleccion"><p>{error}</p></div>;
+  if (!coleccion) return null;
+
+  const libros = coleccion.libros ?? [];
+
+  const librosFiltrados = libros.filter((libro) => {
     const coincideEstado = filtroEstado === "todos" || libro.estado === filtroEstado;
-    const coincideFavorito = !soloFavoritos || libro.favorito;
+    const coincideFavorito = !soloFavoritos || libro.es_favorito;
     return coincideEstado && coincideFavorito;
   });
 
   const librosOrdenados = [...librosFiltrados];
   if (orden === "titulo") {
     librosOrdenados.sort((a, b) => a.titulo.localeCompare(b.titulo));
-  } else if (orden === "rating") {
-    librosOrdenados.sort((a, b) => b.rating - a.rating);
   }
 
   return (
     <div className="coleccion">
       <div className="coleccion__encabezado">
         <div className="coleccion__titulo_fila">
-          <h1 className="coleccion__titulo">{COLECCION.nombre}</h1>
-          <button type="button" className="coleccion__btn_editar" aria-label="Editar nombre">
-            <IconoLapiz />
-          </button>
+          {editandoNombre ? (
+            <>
+              <input
+                className="coleccion__nombre_input"
+                value={nombreInput}
+                onChange={(e) => setNombreInput(e.target.value)}
+              />
+              <button type="button" className="coleccion__btn_editar" onClick={guardarNombre}>Guardar</button>
+              <button type="button" className="coleccion__btn_editar" onClick={() => setEditandoNombre(false)}>Cancelar</button>
+            </>
+          ) : (
+            <>
+              <h1 className="coleccion__titulo">{coleccion.nombre}</h1>
+              <button type="button" className="coleccion__btn_editar" aria-label="Editar nombre" onClick={() => setEditandoNombre(true)}>
+                <IconoLapiz />
+              </button>
+            </>
+          )}
         </div>
-        <div className="coleccion__descripcion_fila">
-          <p className="coleccion__descripcion">{COLECCION.descripcion}</p>
-          <button type="button" className="coleccion__btn_editar coleccion__btn_editar--desc" aria-label="Editar descripción">
-            <IconoLapiz />
-          </button>
-        </div>
+        {coleccion.descripcion && (
+          <p className="coleccion__descripcion">{coleccion.descripcion}</p>
+        )}
       </div>
 
       <div className="coleccion__controles">
@@ -109,18 +155,6 @@ function Coleccion() {
         </div>
 
         <div className="coleccion__controles_derecha">
-          <div className="coleccion__buscador">
-            <svg className="coleccion__buscador_icono" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-              <circle cx="11" cy="11" r="8" />
-              <line x1="21" y1="21" x2="16.65" y2="16.65" />
-            </svg>
-            <input
-              type="search"
-              className="coleccion__buscador_input"
-              placeholder="Buscar en mi colección..."
-            />
-          </div>
-
           <select
             className="coleccion__orden"
             value={orden}
@@ -139,9 +173,10 @@ function Coleccion() {
         <div className="coleccion__grilla">
           {librosOrdenados.map((libro) => (
             <ColeccionLibroCard
-              key={libro.id}
+              key={libro.openlibrary_key ?? libro.id}
               libro={libro}
-              onFavorito={(val) => console.log("favorito", libro.id, val)}
+              onFavorito={(val) => handleFavorito(libro, val)}
+              onQuitar={() => handleQuitar(libro)}
             />
           ))}
         </div>

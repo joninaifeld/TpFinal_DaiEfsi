@@ -206,3 +206,7 @@
   line-height: 1.3;
   color: var(--text);
 }
+
+.home__coleccion_card {
+  cursor: pointer;
+}

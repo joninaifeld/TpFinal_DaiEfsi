@@ -1,7 +1,3 @@
-/* Fuente del diseño: Cormorant Garamond.
-   Agregá en index.html:
-   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&display=swap" rel="stylesheet"> */
-
 .perfil {
   --fondo: #f8f6f1;
   --blanco: #ffffff;
@@ -141,4 +137,56 @@
   .perfil__contenido {
     width: 100%;
   }
+}
+
+.avatar--placeholder {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(60 * var(--u));
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  color: var(--muted);
+  background: var(--blanco);
+}
+
+.campo__bio_input {
+  width: 100%;
+  border: 1px solid var(--borde-avatar);
+  border-radius: calc(4 * var(--u));
+  padding: calc(2 * var(--u));
+  font-family: inherit;
+  font-size: calc(8 * var(--u));
+  resize: vertical;
+}
+
+.campo__error {
+  color: #c0392b;
+  font-size: calc(7 * var(--u));
+  margin-top: calc(2 * var(--u));
+}
+
+.campo__guardar,
+.campo__cancelar {
+  padding: calc(2 * var(--u)) calc(4 * var(--u));
+  border: 1px solid var(--borde-avatar);
+  border-radius: calc(3 * var(--u));
+  background: var(--blanco);
+  font-family: inherit;
+  font-size: calc(8 * var(--u));
+  cursor: pointer;
+  margin-top: calc(2 * var(--u));
+  margin-right: calc(2 * var(--u));
+}
+
+.campo__guardar {
+  background: var(--accent);
+  color: var(--blanco);
+  border-color: var(--accent);
+}
+
+.perfil__actividad_item {
+  font-size: calc(10 * var(--u));
+  color: var(--texto);
+  padding: calc(1 * var(--u)) 0;
+  border-bottom: 1px solid var(--borde-avatar);
 }

@@ -7,26 +7,28 @@ const ETIQUETAS_ESTADO = {
   abandonado: "Recién abandonado",
 };
 
-/**
- * libro: { titulo, portada?, rating, estado? }
- */
-function TarjetaLibro({ libro }) {
+function TarjetaLibro({ libro, onVer }) {
   const { titulo, portada, rating = 0, estado } = libro;
+  const clickeable = typeof onVer === 'function';
 
   return (
-      <article
+    <article
       className={clickeable ? "tarjeta-libro tarjeta-libro--clickeable" : "tarjeta-libro"}
       role={clickeable ? "button" : undefined}
       tabIndex={clickeable ? 0 : undefined}
       onClick={clickeable ? () => onVer(libro) : undefined}
       onKeyDown={
         clickeable
-          ? (e) => {
-              if (e.key === "Enter" || e.key === " ") onVer(libro);
-            }
+          ? (e) => { if (e.key === "Enter" || e.key === " ") onVer(libro); }
           : undefined
       }
     >
+      {portada && (
+        <div
+          className="tarjeta_libro__portada"
+          style={{ backgroundImage: `url(${portada})` }}
+        />
+      )}
       <p className="tarjeta_libro__nombre">{titulo}</p>
       <Estrellas valor={rating} />
       {estado && (

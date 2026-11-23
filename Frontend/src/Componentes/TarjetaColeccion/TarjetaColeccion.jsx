@@ -1,16 +1,7 @@
 import { tiempoRelativo } from "../TiempoRelativo";
 import "./TarjetaColeccion.css";
 
-/**
- * coleccion: {
- *   id, nombre, descripcion,
- *   portada?,          // URL de imagen
- *   cantidadLibros,    // número
- *   actualizadoEn?,    // fecha (ISO string, Date o timestamp)
- * }
- * onVer(coleccion): se llama al tocar "Ver colección"
- */
-function TarjetaColeccion({ coleccion, onVer }) {
+function TarjetaColeccion({ coleccion, onVer, onEliminar }) {
   const { nombre, descripcion, portada, cantidadLibros = 0, actualizadoEn } = coleccion;
   const actualizado = tiempoRelativo(actualizadoEn);
 
@@ -42,6 +33,16 @@ function TarjetaColeccion({ coleccion, onVer }) {
       >
         Ver colección
       </button>
+
+      {onEliminar && (
+        <button
+          type="button"
+          className="tarjeta-coleccion__boton tarjeta-coleccion__boton--eliminar"
+          onClick={() => onEliminar(coleccion)}
+        >
+          Eliminar
+        </button>
+      )}
     </article>
   );
 }

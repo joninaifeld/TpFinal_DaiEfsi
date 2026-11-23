@@ -7,18 +7,15 @@
   --text: #181c20;
   --muted: #6b6b6b;
 
-  /* Tipografía compartida */
   --font-serif: "Cormorant Garamond", Georgia, serif;
   --font-sans: "Inter", system-ui, sans-serif;
 
-  /* Escala de texto */
   --size-titulo: 1.75rem;
   --size-subtitulo: 0.95rem;
   --size-seccion: 1.5rem;
   --size-cuerpo: 1rem;
   --size-chico: 0.875rem;
 
-  /* Márgenes laterales compartidos */
   --padding-lateral: 4rem;
 
   font-family: var(--font-sans);
@@ -80,7 +77,6 @@ p {
   margin: 0;
 }
 
-/* Estilo compartido para todos los <select> de filtro */
 .filtro_select {
   height: 2rem;
   padding: 0 2rem 0 0.75rem;
@@ -101,19 +97,4 @@ p {
 
 .filtro_select:focus {
   border-color: var(--accent);
-}
-
-code,
-.counter {
-  font-family: var(--mono);
-  display: inline-flex;
-  border-radius: 4px;
-  color: var(--text-h);
-}
-
-code {
-  font-size: 15px;
-  line-height: 135%;
-  padding: 4px 8px;
-  background: var(--code-bg);
 }

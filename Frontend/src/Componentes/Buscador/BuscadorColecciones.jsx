@@ -1,11 +1,5 @@
 import "./BuscadorColecciones.css";
 
-/**
- * Buscador controlado: el padre guarda el texto.
- * Props:
- *  - valor, onCambio(texto)
- *  - onBuscar(texto)   (opcional, al apretar Enter; útil para buscar en el backend)
- */
 function BuscadorColecciones({
   valor = "",
   onCambio,

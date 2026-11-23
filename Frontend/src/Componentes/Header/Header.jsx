@@ -1,11 +1,12 @@
 import { useCallback, useEffect, useLayoutEffect, useRef, useState } from "react";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import FotoPerfil from "../FotoPerfil/FotoPerfil";
 import logo from "../../assets/LogoNegro.png";
+import { useAuth } from "../../context/AuthContext.jsx";
 import "./Header.css";
 
 const SECCIONES = [
-  { ruta: "/", texto: "Home" },
+  { ruta: "/home", texto: "Home" },
   { ruta: "/explorar", texto: "Explorar" },
   { ruta: "/biblioteca", texto: "Biblioteca" },
   { ruta: "/estadisticas", texto: "Estadísticas" },
@@ -13,11 +14,12 @@ const SECCIONES = [
 
 const DURACION_BARRA = 670;
 
-function Header({ fotoPerfil }) {
+function Header() {
   const { pathname } = useLocation();
+  const navigate = useNavigate();
+  const { user, logout } = useAuth();
   const headerRef = useRef(null);
   const [barra, setBarra] = useState({ left: 0, width: 0, visible: false, animar: false });
-
   const [seleccionado, setSeleccionado] = useState(pathname);
 
   useEffect(() => {
@@ -38,7 +40,7 @@ function Header({ fotoPerfil }) {
       left: posDestino.left - posHeader.left,
       width: posDestino.width,
       visible: true,
-      animar: prev.visible, 
+      animar: prev.visible,
     }));
   }, [pathname]);
 
@@ -52,9 +54,14 @@ function Header({ fotoPerfil }) {
     return () => window.removeEventListener("resize", medir);
   }, [medir]);
 
+  const handleLogout = () => {
+    logout();
+    navigate('/login');
+  };
+
   return (
     <header className="header" ref={headerRef}>
-      <Link to="/" className="header__logo">
+      <Link to="/home" className="header__logo">
         <img src={logo} alt="My Collection - Librería web y colecciones" />
       </Link>
 
@@ -73,16 +80,21 @@ function Header({ fotoPerfil }) {
         ))}
       </nav>
 
-   <Link
-  to="/perfil"
-  className="header__perfil"
-  data-ruta="/perfil"
-  aria-label="Ir a mi perfil"
->
-  <FotoPerfil foto={fotoPerfil} activo={seleccionado === "/perfil"} />
-</Link>
+      <div className="header__perfil">
+        {user?.username && (
+          <span className="header__username">{user.username}</span>
+        )}
+        <FotoPerfil activo={seleccionado === "/perfil"} />
+        <button
+          type="button"
+          className="header__logout"
+          onClick={handleLogout}
+          aria-label="Cerrar sesión"
+        >
+          Salir
+        </button>
+      </div>
 
-      {/* Barra dorada que se desliza por debajo de todo el header */}
       <span
         className={`header__barra ${barra.animar ? "header__barra--animada" : ""}`}
         style={{

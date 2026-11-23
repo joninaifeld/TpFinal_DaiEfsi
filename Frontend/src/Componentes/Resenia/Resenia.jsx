@@ -1,7 +1,6 @@
 import Estrellas from "../Estrellas/Estrellas";
 import "./Resenia.css";
 
-/** resenia: { libro, rating, texto } */
 function Resenia({ resenia }) {
   const { libro, rating = 0, texto } = resenia;
 

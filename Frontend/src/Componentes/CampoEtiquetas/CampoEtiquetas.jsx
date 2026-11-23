@@ -1,10 +1,5 @@
 import "./CampoEtiquetas.css";
 
-/**
- * Un rótulo con una lista de "chips".
- *  - titulo:    texto chico de arriba (géneros, idiomas, autor/es…)
- *  - etiquetas: array de strings o números
- */
 function CampoEtiquetas({ titulo, etiquetas = [] }) {
   const lista = Array.isArray(etiquetas) ? etiquetas : [etiquetas];
 

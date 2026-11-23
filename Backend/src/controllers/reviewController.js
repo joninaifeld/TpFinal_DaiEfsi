@@ -1,6 +1,9 @@
+import { Router } from 'express';
+import verifyToken from '../middlewares/authMiddleware.js';
 import ReviewService from '../services/reviewService.js';
 
-const svc = new ReviewService();
+const router = Router();
+const reviewSvc = new ReviewService();
 
 router.get('/:olid/resenas', async (req, res) => {
   const { olid } = req.params;
@@ -12,7 +15,6 @@ router.get('/:olid/resenas', async (req, res) => {
     const data = await reviewSvc.getResenasByOlid(olid.trim());
     return res.status(200).json(data);
   } catch (error) {
-    console.error('Error al obtener reseñas:', error);
     return res.status(500).json({ error: error.message });
   }
 });
@@ -31,7 +33,7 @@ router.put('/:olid/resena', verifyToken, async (req, res) => {
   }
 
   try {
-    const resenaGuardada = await svc.upsertResena(req.user.id, olid.trim(), {
+    const resenaGuardada = await reviewSvc.upsertResena(req.user.id, olid.trim(), {
       puntuacion: nota,
       resena_texto,
       bookData: { titulo, autor, cover_url, genero_principal }
@@ -41,7 +43,6 @@ router.put('/:olid/resena', verifyToken, async (req, res) => {
       resena: resenaGuardada
     });
   } catch (error) {
-    console.error('Error al guardar reseña:', error);
     return res.status(500).json({ error: error.message });
   }
 });
@@ -55,7 +56,8 @@ router.delete('/:olid/resena', verifyToken, async (req, res) => {
     }
     return res.status(200).json({ message: 'Reseña eliminada con éxito' });
   } catch (error) {
-    console.error('Error al eliminar reseña:', error);
     return res.status(500).json({ error: error.message });
   }
 });
+
+export default router;

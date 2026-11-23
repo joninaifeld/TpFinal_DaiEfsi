@@ -1,31 +1,6 @@
+import { useEffect, useState } from "react";
+import { getEstadisticas } from "../../services/userService.js";
 import "./Estadisticas.css";
-
-const STATS = {
-  estados: {
-    "Quiero leer": 3,
-    Leyendo: 1,
-    "Leído": 6,
-    Abandonado: 0,
-  },
-  total_favoritos: 5,
-  total_interacciones: 10,
-  colecciones: {
-    total_colecciones: 3,
-    libros_en_colecciones: 8,
-  },
-  generos_mas_frecuentes: [
-    { genero: "Science fiction", cantidad: 4 },
-    { genero: "Fantasy", cantidad: 3 },
-    { genero: "Drama", cantidad: 2 },
-    { genero: "Terror", cantidad: 2 },
-    { genero: "Historia", cantidad: 1 },
-  ],
-  valoraciones: {
-    total_valoraciones: 5,
-    total_resenas: 3,
-    puntuacion_promedio: 4.4,
-  },
-};
 
 function TarjetaStat({ titulo, children, className }) {
   return (
@@ -37,8 +12,24 @@ function TarjetaStat({ titulo, children, className }) {
 }
 
 function Estadisticas() {
-  const { estados, total_favoritos, total_interacciones, colecciones, generos_mas_frecuentes, valoraciones } = STATS;
-  const maxGenero = generos_mas_frecuentes[0]?.cantidad ?? 1;
+  const [stats, setStats] = useState(null);
+  const [cargando, setCargando] = useState(true);
+  const [error, setError] = useState('');
+
+  useEffect(() => {
+    getEstadisticas()
+      .then(setStats)
+      .catch(() => setError('No se pudieron cargar las estadísticas.'))
+      .finally(() => setCargando(false));
+  }, []);
+
+  if (cargando) return <div className="estadisticas"><p>Cargando estadísticas...</p></div>;
+  if (error) return <div className="estadisticas"><p>{error}</p></div>;
+  if (!stats) return null;
+
+  const { estados, total_favoritos, total_interacciones, colecciones, generos_mas_frecuentes, valoraciones } = stats;
+  const maxGenero = generos_mas_frecuentes?.[0]?.cantidad ?? 1;
+  const promedio = valoraciones?.puntuacion_promedio;
 
   return (
     <div className="estadisticas">
@@ -48,7 +39,7 @@ function Estadisticas() {
 
         <TarjetaStat titulo="Mi biblioteca">
           <ul className="stat_estados">
-            {Object.entries(estados).map(([estado, cantidad]) => (
+            {Object.entries(estados ?? {}).map(([estado, cantidad]) => (
               <li key={estado} className="stat_estados__fila">
                 <span className="stat_estados__nombre">{estado}</span>
                 <span className="stat_estados__cantidad">{cantidad}</span>
@@ -59,7 +50,7 @@ function Estadisticas() {
 
         <TarjetaStat titulo="Géneros más frecuentes">
           <ul className="stat_generos">
-            {generos_mas_frecuentes.map(({ genero, cantidad }) => (
+            {(generos_mas_frecuentes ?? []).map(({ genero, cantidad }) => (
               <li key={genero} className="stat_generos__fila">
                 <span className="stat_generos__nombre">{genero}</span>
                 <div className="stat_generos__barra_fondo">
@@ -75,10 +66,10 @@ function Estadisticas() {
         </TarjetaStat>
 
         <TarjetaStat titulo="Colecciones">
-          <p className="stat_numero">{colecciones.total_colecciones}</p>
+          <p className="stat_numero">{colecciones?.total_colecciones ?? 0}</p>
           <p className="stat_label">colecciones creadas</p>
           <div className="stat_separador" />
-          <p className="stat_numero stat_numero--medio">{colecciones.libros_en_colecciones}</p>
+          <p className="stat_numero stat_numero--medio">{colecciones?.libros_en_colecciones ?? 0}</p>
           <p className="stat_label">libros en colecciones</p>
         </TarjetaStat>
 
@@ -87,12 +78,12 @@ function Estadisticas() {
       <div className="estadisticas__fila">
 
         <TarjetaStat titulo="Libros guardados">
-          <p className="stat_numero">{total_interacciones}</p>
+          <p className="stat_numero">{total_interacciones ?? 0}</p>
           <p className="stat_label">en favoritos o con estado</p>
         </TarjetaStat>
 
         <TarjetaStat titulo="Favoritos">
-          <p className="stat_numero">{total_favoritos}</p>
+          <p className="stat_numero">{total_favoritos ?? 0}</p>
           <p className="stat_label">libros marcados</p>
         </TarjetaStat>
 
@@ -100,7 +91,7 @@ function Estadisticas() {
           <div className="stat_valoraciones_contenido">
             <div className="stat_valoraciones_principal">
               <p className="stat_numero stat_numero--grande">
-                {valoraciones.puntuacion_promedio.toFixed(1)}
+                {promedio != null ? Number(promedio).toFixed(1) : '—'}
                 <span className="stat_numero__suffix"> / 5</span>
               </p>
               <p className="stat_label">puntuación promedio</p>
@@ -108,11 +99,11 @@ function Estadisticas() {
             <div className="stat_separador_v" />
             <div className="stat_valoraciones_detalle">
               <div>
-                <p className="stat_numero stat_numero--medio">{valoraciones.total_valoraciones}</p>
+                <p className="stat_numero stat_numero--medio">{valoraciones?.total_valoraciones ?? 0}</p>
                 <p className="stat_label">valoraciones</p>
               </div>
               <div>
-                <p className="stat_numero stat_numero--medio">{valoraciones.total_resenas}</p>
+                <p className="stat_numero stat_numero--medio">{valoraciones?.total_resenas ?? 0}</p>
                 <p className="stat_label">reseñas escritas</p>
               </div>
             </div>

@@ -97,3 +97,19 @@
   background-color: var(--border);
   color: var(--text);
 }
+
+.coleccion_libro_card__quitar {
+  padding: 0.2rem 0.6rem;
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  background: transparent;
+  color: var(--muted);
+  font-family: var(--font-sans);
+  font-size: 0.75rem;
+  cursor: pointer;
+}
+
+.coleccion_libro_card__quitar:hover {
+  color: #c0392b;
+  border-color: #c0392b;
+}

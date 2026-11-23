@@ -1,7 +1,6 @@
 import "./Estrellas.css";
 
 function Estrellas({ valor = 0 }) {
-  // Redondea al 0.5 más cercano: 4.3 -> 4.5, 4.2 -> 4, 4.8 -> 5
   const redondeado = Math.round(valor * 2) / 2;
 
   return (

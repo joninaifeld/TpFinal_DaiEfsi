@@ -100,3 +100,79 @@
     grid-template-columns: minmax(0, 1fr);
   }
 }
+
+.biblioteca__libros,
+.biblioteca__colecciones {
+  margin-top: 2rem;
+}
+
+.biblioteca__seccion_titulo {
+  font-size: 1.6rem;
+  font-weight: 400;
+  font-family: var(--font-serif);
+  margin-bottom: 1rem;
+  border-bottom: 2px solid var(--border);
+  padding-bottom: 0.5rem;
+}
+
+.biblioteca__estado_btn {
+  padding: 0.35rem 0.9rem;
+  border: 1.5px solid var(--border);
+  border-radius: 6px;
+  background-color: var(--surface);
+  color: var(--text);
+  font-family: var(--font-sans);
+  font-size: var(--size-chico);
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.biblioteca__estado_btn--activo {
+  background-color: var(--accent);
+  color: var(--primary);
+  border-color: var(--accent);
+}
+
+.biblioteca__nueva {
+  display: flex;
+  gap: 0.625rem;
+  align-items: center;
+  margin-bottom: 1rem;
+  flex-wrap: wrap;
+}
+
+.biblioteca__nueva_input {
+  flex: 1;
+  min-width: 200px;
+  height: 2rem;
+  padding: 0 0.75rem;
+  border: 1.5px solid var(--border);
+  border-radius: 6px;
+  background-color: var(--surface);
+  color: var(--text);
+  font-family: var(--font-sans);
+  font-size: var(--size-chico);
+  outline: none;
+}
+
+.biblioteca__nueva_input:focus {
+  border-color: var(--accent);
+}
+
+.biblioteca__nueva_btn {
+  padding: 0.4rem 1.2rem;
+  background-color: var(--accent);
+  color: var(--primary);
+  border: none;
+  border-radius: 6px;
+  font-family: var(--font-sans);
+  font-size: var(--size-chico);
+  cursor: pointer;
+}
+
+.biblioteca__error {
+  color: #c0392b;
+  font-family: var(--font-sans);
+  font-size: var(--size-chico);
+  margin-top: 0.5rem;
+}
