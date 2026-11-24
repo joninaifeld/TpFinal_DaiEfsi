@@ -24,13 +24,14 @@ Hacemos de libros. Originalmente elegimos hacer de videojuegos pero no hay ningu
 
 ## Instrucciones para correr el proyecto
 
-1. Abrir DBeaver, conectarse a PostgreSQL, abrir el dump-postgres-202610271024.sql, y ejecutarlo con Ctrl + Alt + X
-2. Copiar y pegar el Backend/.env.example y completar los valores de la base de datos y el JWT secret
-3. cd Backend
-4. npm install
-5. npm start
-6. Abrir otra terminal
-7. Crear el archivo Frontend/.env con el contenido VITE_API_URL=http://localhost:3000/api
-8. cd Frontend
-9. npm install
-10. npm run dev
+1. Abrir link de render: https://tp-final-dai-efsi.vercel.app/login
+2. Al hacer la primera llamada va a tardar un minuto en prenderse, después ya está
+3. Disfrutar :D
+4. Datos de prueba: lector_demo demo1234
+
+
+---
+
+## Que es la página
+
+My Collection es una app para organizar libros. Podés buscar libros reales de Open Library, guardarlos en tu biblioteca, marcarlos como favoritos, ponerles un estado (quiero leer, leyendo, leído, abandonado), armar colecciones, escribir reseñas y ver estadísticas tuyas.
