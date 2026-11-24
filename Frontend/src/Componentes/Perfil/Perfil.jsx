@@ -15,6 +15,9 @@ function Perfil() {
   const [editandoBio, setEditandoBio] = useState(false);
   const [bioInput, setBioInput] = useState('');
   const [errorBio, setErrorBio] = useState('');
+  const [editandoAvatar, setEditandoAvatar] = useState(false);
+  const [avatarInput, setAvatarInput] = useState('');
+  const [errorAvatar, setErrorAvatar] = useState('');
 
   useEffect(() => {
     async function cargar() {
@@ -27,6 +30,7 @@ function Perfil() {
       if (perfilRes.status === 'fulfilled') {
         setPerfil(perfilRes.value);
         setBioInput(perfilRes.value.bio ?? '');
+        setAvatarInput(perfilRes.value.avatar_url ?? '');
       }
       if (favRes.status === 'fulfilled') setFavoritos(favRes.value);
       if (actRes.status === 'fulfilled') setActividad(actRes.value);
@@ -47,17 +51,56 @@ function Perfil() {
     }
   };
 
+  const guardarAvatar = async () => {
+    setErrorAvatar('');
+    try {
+      const res = await updatePerfil({ foto_perfil: avatarInput.trim() || null });
+      setPerfil((prev) => ({ ...prev, avatar_url: res.user?.avatar_url ?? avatarInput.trim() }));
+      setEditandoAvatar(false);
+    } catch (err) {
+      setErrorAvatar(err.response?.data?.error || 'Error al guardar.');
+    }
+  };
+
   if (cargando) return <main className="perfil"><p>Cargando perfil...</p></main>;
   if (!perfil) return null;
 
   return (
     <main className="perfil">
       <aside className="perfil__lateral">
-        {perfil.avatar_url ? (
-          <img className="avatar" src={perfil.avatar_url} alt="Foto de perfil" />
+        {editandoAvatar ? (
+          <div className="avatar_editar">
+            <input
+              type="url"
+              className="avatar_input"
+              placeholder="URL de la foto"
+              value={avatarInput}
+              onChange={(e) => setAvatarInput(e.target.value)}
+            />
+            {errorAvatar && <p className="campo__error">{errorAvatar}</p>}
+            <button type="button" className="campo__guardar" onClick={guardarAvatar}>Guardar</button>
+            <button type="button" className="campo__cancelar" onClick={() => setEditandoAvatar(false)}>Cancelar</button>
+          </div>
         ) : (
-          <div className="avatar avatar--placeholder">
-            {perfil.username?.charAt(0).toUpperCase()}
+          <div className="avatar_contenedor">
+            {perfil.avatar_url ? (
+              <img className="avatar" src={perfil.avatar_url} alt="Foto de perfil" />
+            ) : (
+              <div className="avatar avatar--placeholder">
+                {perfil.username?.charAt(0).toUpperCase()}
+              </div>
+            )}
+            <button
+              type="button"
+              className="campo__editar avatar__editar"
+              aria-label="Editar foto"
+              onClick={() => setEditandoAvatar(true)}
+            >
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M11 4H5a2 2 0 0 0-2 2v13a2 2 0 0 0 2 2h13a2 2 0 0 0 2-2v-6" />
+                <path d="M18.5 2.5a2.1 2.1 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z" />
+              </svg>
+            </button>
           </div>
         )}
 

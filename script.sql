@@ -1,7 +1,3 @@
---
--- PostgreSQL database dump (Actualizado con tabla actividades)
---
-
 SET statement_timeout = 0;
 SET lock_timeout = 0;
 SET idle_in_transaction_session_timeout = 0;
@@ -13,10 +9,6 @@ SET xmloption = content;
 SET client_min_messages = warning;
 SET row_security = off;
 
---
--- Name: adminpack; Type: EXTENSION; Schema: -; Owner: -
---
-
 CREATE EXTENSION IF NOT EXISTS adminpack WITH SCHEMA pg_catalog;
 
 
@@ -24,10 +16,6 @@ SET default_tablespace = '';
 
 SET default_table_access_method = heap;
 
-
---
--- Name: actividades; Type: TABLE; Schema: public; Owner: postgres
---
 
 CREATE TABLE public.actividades (
     id integer NOT NULL,
@@ -42,9 +30,6 @@ CREATE TABLE public.actividades (
 
 ALTER TABLE public.actividades OWNER TO postgres;
 
---
--- Name: actividades_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
---
 
 CREATE SEQUENCE public.actividades_id_seq
     AS integer
@@ -60,9 +45,6 @@ ALTER SEQUENCE public.actividades_id_seq OWNER TO postgres;
 ALTER SEQUENCE public.actividades_id_seq OWNED BY public.actividades.id;
 
 
---
--- Name: estado_lectura; Type: TABLE; Schema: public; Owner: postgres
---
 
 CREATE TABLE public.estado_lectura (
     id integer NOT NULL,
@@ -77,9 +59,6 @@ CREATE TABLE public.estado_lectura (
 
 ALTER TABLE public.estado_lectura OWNER TO postgres;
 
---
--- Name: estado_lectura_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
---
 
 CREATE SEQUENCE public.estado_lectura_id_seq
     AS integer
@@ -95,10 +74,6 @@ ALTER SEQUENCE public.estado_lectura_id_seq OWNER TO postgres;
 ALTER SEQUENCE public.estado_lectura_id_seq OWNED BY public.estado_lectura.id;
 
 
---
--- Name: coleccion_libros; Type: TABLE; Schema: public; Owner: postgres
---
-
 CREATE TABLE public.coleccion_libros (
     coleccion_id integer NOT NULL,
     libro_id integer NOT NULL,
@@ -107,10 +82,6 @@ CREATE TABLE public.coleccion_libros (
 
 
 ALTER TABLE public.coleccion_libros OWNER TO postgres;
-
---
--- Name: colecciones; Type: TABLE; Schema: public; Owner: postgres
---
 
 CREATE TABLE public.colecciones (
     id integer NOT NULL,
@@ -123,9 +94,6 @@ CREATE TABLE public.colecciones (
 
 ALTER TABLE public.colecciones OWNER TO postgres;
 
---
--- Name: colecciones_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
---
 
 CREATE SEQUENCE public.colecciones_id_seq
     AS integer
@@ -141,9 +109,6 @@ ALTER SEQUENCE public.colecciones_id_seq OWNER TO postgres;
 ALTER SEQUENCE public.colecciones_id_seq OWNED BY public.colecciones.id;
 
 
---
--- Name: libros; Type: TABLE; Schema: public; Owner: postgres
---
 
 CREATE TABLE public.libros (
     id integer NOT NULL,
@@ -157,9 +122,7 @@ CREATE TABLE public.libros (
 
 ALTER TABLE public.libros OWNER TO postgres;
 
---
--- Name: libros_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
---
+
 
 CREATE SEQUENCE public.libros_id_seq
     AS integer
@@ -175,9 +138,6 @@ ALTER SEQUENCE public.libros_id_seq OWNER TO postgres;
 ALTER SEQUENCE public.libros_id_seq OWNED BY public.libros.id;
 
 
---
--- Name: usuarios; Type: TABLE; Schema: public; Owner: postgres
---
 
 CREATE TABLE public.usuarios (
     id integer NOT NULL,
@@ -194,9 +154,6 @@ CREATE TABLE public.usuarios (
 
 ALTER TABLE public.usuarios OWNER TO postgres;
 
---
--- Name: usuarios_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
---
 
 CREATE SEQUENCE public.usuarios_id_seq
     AS integer
@@ -212,9 +169,6 @@ ALTER SEQUENCE public.usuarios_id_seq OWNER TO postgres;
 ALTER SEQUENCE public.usuarios_id_seq OWNED BY public.usuarios.id;
 
 
---
--- Name: valoraciones_resenas; Type: TABLE; Schema: public; Owner: postgres
---
 
 CREATE TABLE public.valoraciones_resenas (
     id integer NOT NULL,
@@ -229,9 +183,7 @@ CREATE TABLE public.valoraciones_resenas (
 
 ALTER TABLE public.valoraciones_resenas OWNER TO postgres;
 
---
--- Name: valoraciones_resenas_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
---
+
 
 CREATE SEQUENCE public.valoraciones_resenas_id_seq
     AS integer
@@ -247,9 +199,6 @@ ALTER SEQUENCE public.valoraciones_resenas_id_seq OWNER TO postgres;
 ALTER SEQUENCE public.valoraciones_resenas_id_seq OWNED BY public.valoraciones_resenas.id;
 
 
---
--- Defaults
---
 
 ALTER TABLE ONLY public.actividades ALTER COLUMN id SET DEFAULT nextval('public.actividades_id_seq'::regclass);
 ALTER TABLE ONLY public.estado_lectura ALTER COLUMN id SET DEFAULT nextval('public.estado_lectura_id_seq'::regclass);
@@ -259,9 +208,7 @@ ALTER TABLE ONLY public.usuarios ALTER COLUMN id SET DEFAULT nextval('public.usu
 ALTER TABLE ONLY public.valoraciones_resenas ALTER COLUMN id SET DEFAULT nextval('public.valoraciones_resenas_id_seq'::regclass);
 
 
---
--- Sequences Setting
---
+
 
 SELECT pg_catalog.setval('public.actividades_id_seq', 1, true);
 SELECT pg_catalog.setval('public.estado_lectura_id_seq', 1, true);
@@ -271,9 +218,7 @@ SELECT pg_catalog.setval('public.usuarios_id_seq', 1, true);
 SELECT pg_catalog.setval('public.valoraciones_resenas_id_seq', 1, true);
 
 
---
--- Constraints & Indexes
---
+
 
 ALTER TABLE ONLY public.actividades
     ADD CONSTRAINT actividades_pkey PRIMARY KEY (id);
@@ -321,9 +266,7 @@ CREATE INDEX idx_colecciones_usuario ON public.colecciones USING btree (usuario_
 CREATE INDEX idx_actividades_usuario ON public.actividades USING btree (usuario_id);
 
 
---
--- Foreign Keys
---
+
 
 ALTER TABLE ONLY public.actividades
     ADD CONSTRAINT actividades_usuario_id_fkey FOREIGN KEY (usuario_id) REFERENCES public.usuarios(id) ON DELETE CASCADE;
